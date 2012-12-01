@@ -11,6 +11,7 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
+                    <!-- Removed some fields, and rearranged the remaining. -->
                     <xpath 
                         expr='/form/notebook/page[@id=&quot;general_info&quot;]/notebook/page[@id=&quot;main_info_page&quot;]/group'
                         position='replace'>
@@ -29,6 +30,34 @@
                             <newline/>
                             <label name="current_insurance"/>
                             <field name="current_insurance"/>
+                        </group>
+                    </xpath>
+
+                    <!-- Remove the Misc tab under General info entirely. -->
+                    <xpath 
+                        expr='/form/notebook/page[@id=&quot;general_info&quot;]/notebook/page[@id=&quot;misc_info_page&quot;]'
+                        position='replace'>
+                    </xpath>
+
+                    <!-- Place the fields that were in the Misc tab in the Main tab at the bottom. -->
+                    <xpath 
+                        expr='/form/notebook/page[@id=&quot;general_info&quot;]/notebook/page[@id=&quot;main_info_page&quot;]/group'
+                        position='after'>
+                        <group id="patient_info" colspan="4" col="4">
+                            <separator colspan="4"
+                                string="Patient Extra Information"
+                                id="separator_misc"/>
+                            <newline/>
+                            <field name="general_info" colspan="4"/>
+                        </group>
+                        <newline/>
+                        <group colspan="4" col="6" id="misc_info_group">
+                            <label name="deceased"/>
+                            <field name="deceased"/>
+                            <label name="dod"/>
+                            <field name="dod"/>
+                            <label name="cod"/>
+                            <field name="cod"/>
                         </group>
                     </xpath>
                 </data>
