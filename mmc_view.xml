@@ -79,6 +79,8 @@
                             <newline/>
                             <label name="next_dose_date"/>
                             <field name="next_dose_date"/>
+                            <label name="vaccine_by_mmc"/>
+                            <field name="vaccine_by_mmc"/>
                         </group>
                     </xpath>
                 </data>

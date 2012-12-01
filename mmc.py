@@ -47,6 +47,10 @@ class MmcVaccination(ModelSQL, ModelView):
     _name = 'gnuhealth.vaccination'
     _description = __doc__
 
+    # Was the vaccine administered by MMC?
+    vaccine_by_mmc = fields.Boolean('Administered by MMC',
+        help="Check if this vaccine was administered by Mercy Maternity Clinic")
+
     # Hide these unnecessary fields
     vaccine_expiration_date = fields.Date('x', states={'invisible': True})
     vaccine_lot = fields.Char('x', states={'invisible': True})
