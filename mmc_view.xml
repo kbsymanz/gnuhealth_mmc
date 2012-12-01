@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<tryton>
+    <data>
+
+        <!-- Redefining the gnuhealth_patient_view_form by removing unnecessary fields
+             and moving the remaining fields into better positions. -->
+        <record model="ir.ui.view" id="mmc_patient_view">
+            <field name="model">gnuhealth.patient</field>
+            <field name="inherit" ref="health.gnuhealth_patient_view_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <xpath 
+                        expr='/form/notebook/page[@id=&quot;general_info&quot;]/notebook/page[@id=&quot;main_info_page&quot;]/group'
+                        position='replace'>
+                        <group col="6" colspan="4"
+                            string="Patient General Information"
+                            id="general_info">
+                            <label name="blood_type"/>
+                            <field name="blood_type"/>
+                            <label name="rh"/>
+                            <field name="rh"/>
+                            <newline/>
+                            <label name="current_address"/>
+                            <field name="current_address"/>
+                            <label name="marital_status"/>
+                            <field name="marital_status"/>
+                            <newline/>
+                            <label name="current_insurance"/>
+                            <field name="current_insurance"/>
+                        </group>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
+    </data>
+</tryton>
