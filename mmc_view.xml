@@ -54,5 +54,37 @@
             </field>
         </record>
 
+
+        <!-- Change the order of the fields for the sake of the workflow and
+             remove unnecessary fields. -->
+        <record model="ir.ui.view" id="mmc_vaccination_form">
+            <field name="model">gnuhealth.vaccination</field>
+            <field name="inherit" ref="health.gnuhealth_vaccination_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <xpath 
+                        expr='/form/group[@id=&quot;vaccination_header&quot;]'
+                        position='replace'>
+                        <group colspan="4" id="vaccination_header">
+                            <group colspan="4" col="6" id="group_vaccine_dates">
+                                <label name="vaccine"/>
+                                <field name="vaccine"/>
+                                <label name="dose"/>
+                                <field name="dose"/>
+                                <label name="date"/>
+                                <field name="date"/>
+                            </group>
+                            <newline/>
+                            <label name="next_dose_date"/>
+                            <field name="next_dose_date"/>
+                        </group>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
     </data>
 </tryton>
