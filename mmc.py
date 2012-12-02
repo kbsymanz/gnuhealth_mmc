@@ -1,4 +1,5 @@
 from trytond.model import ModelView, ModelSQL, fields
+from trytond.pyson import Eval, Not, Bool
 
 #class MmcPatient(ModelSQL, ModelView):
 	#'Adapt the gnuhealth.patient to our needs'
@@ -31,6 +32,20 @@ class MmcPatientData(ModelSQL, ModelView):
         ('d', 'Divorced'),
         ('x', 'Separated'),
         ], 'Marital Status', sort=False)
+
+
+    # Add Phil Health related fields.
+    phil_health = fields.Boolean('Phil Health',
+        help='Mark if the patient has Phil Health')
+    phil_health_mcp = fields.Boolean('MCP',
+        help="If MCP applies",
+        states={'invisible': Not(Bool(Eval('phil_health')))},
+        depends=['phil_health'])
+    phil_health_ncp = fields.Boolean('NCP',
+        help="If NCP applies",
+        states={'invisible': Not(Bool(Eval('phil_health')))},
+        depends=['phil_health'])
+
 
 
     # Department of Health required id.

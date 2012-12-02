@@ -27,9 +27,16 @@
                                 <field name="current_address"/>
                                 <label name="marital_status"/>
                                 <field name="marital_status"/>
+                            </group>
+                            <group id="patient_phil_health" colspan="2" col="6">
                                 <newline/>
-                                <label name="current_insurance"/>
-                                <field name="current_insurance"/>
+                                <label name="phil_health"/>
+                                <field name="phil_health"/>
+                                <label name="phil_health_mcp"/>
+                                <field name="phil_health_mcp"/>
+                                <label name="phil_health_ncp"/>
+                                <field name="phil_health_ncp"/>
+                                <newline/>
                             </group>
                             <group id="patient_info" colspan="4" col="4">
                                 <separator colspan="4"
