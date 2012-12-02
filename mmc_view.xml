@@ -118,6 +118,22 @@
                         expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_gyneco&quot;]"
                         position="replace">
                     </xpath>
+
+                    <!-- Note: health_gyneco module used same id for screening tab as it does for the gyneco tab. -->
+                    <xpath
+                        expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_gyneco&quot;]"
+                        position="replace">
+                        <page string="Screening" id="page_gyneco">
+                            <group colspan="4" col="8" id="group_prevention">
+                                <label name="pap_test"/>
+                                <field name="pap_test"/>
+                                <label name="gram_stain"/>
+                                <field name="gram_stain"/>
+                                <label name="breast_self_exam_taught"/>
+                                <field name="breast_self_exam_taught"/>
+                            </group>
+                        </page>
+                    </xpath>
                 </data>
                 ]]>
             </field>

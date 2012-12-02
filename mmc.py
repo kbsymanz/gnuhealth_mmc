@@ -46,6 +46,11 @@ class MmcPatientData(ModelSQL, ModelView):
         states={'invisible': Not(Bool(Eval('phil_health')))},
         depends=['phil_health'])
 
+    # Add new screening related fields.
+    gram_stain = fields.Boolean('Gram Stain',
+        help="Check if gram stain was done")
+    breast_self_exam_taught = fields.Boolean('Taught breast self exam',
+        help="Check if patient has been taught how to do breast self exams")
 
 
     # Department of Health required id.
