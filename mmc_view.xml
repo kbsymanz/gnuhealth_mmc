@@ -23,6 +23,9 @@
                                 <label name="rh"/>
                                 <field name="rh"/>
                                 <newline/>
+                                <label name="menarche"/>
+                                <field name="menarche"/>
+                                <newline/>
                                 <label name="current_address"/>
                                 <field name="current_address"/>
                                 <label name="marital_status"/>
@@ -96,7 +99,7 @@
         </record>
 
         <!-- Remove the Colposcopy page since it is not used. -->
-        <record model="ir.ui.view" id="gnuhealth_patient_view">
+        <record model="ir.ui.view" id="mmc_patient_view_form">
             <field name="model">gnuhealth.patient</field>
             <field name="inherit" ref="health.gnuhealth_patient_view_form" />
             <field name="type">form</field>
@@ -109,6 +112,11 @@
                         <page string="Pap / Colpo" id="page_pap_colpo">
                             <field name="pap_history"/>
                         </page>
+                    </xpath>
+
+                    <xpath
+                        expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_gyneco&quot;]"
+                        position="replace">
                     </xpath>
                 </data>
                 ]]>
