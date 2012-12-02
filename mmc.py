@@ -103,3 +103,16 @@ class MmcVaccination(ModelSQL, ModelView):
 MmcVaccination()
 
 
+class MmcPatientMedication(ModelSQL, ModelView):
+    'Patient Medication'
+    _name = 'gnuhealth.patient.medication'
+    _inherits = {'gnuhealth.medication.template': 'template'}
+    _description = __doc__
+
+    # Change the field label.
+    doctor = fields.Many2One('gnuhealth.physician', 'Name',
+        help='Name of person who prescribed the medicament')
+
+MmcPatientMedication()
+
+

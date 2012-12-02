@@ -11,7 +11,7 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
-                    <xpath 
+                    <xpath
                         expr='/form/notebook/page[@id=&quot;general_info&quot;]'
                         position='replace'>
                         <page string="General Info" id="general_info">
@@ -64,6 +64,28 @@
             </field>
         </record>
 
+        <!-- Change the wording on the medication extra info form. -->
+        <record model="ir.ui.view" id="gnuhealth_patient_medication_form">
+            <field name="model">gnuhealth.patient.medication</field>
+            <field name="inherit" ref="health.gnuhealth_patient_medication_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <xpath
+                        expr='/form/notebook/page[@id=&quot;medication_misc&quot;]/group[@id=&quot;medication_notes&quot;]'
+                        position='replace'>
+                        <group id="medication_notes"
+                            string="Prescribed by">
+                            <label name="doctor"/>
+                            <field name="doctor"/>
+                        </group>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
 
         <!-- Change the order of the fields for the sake of the workflow and
              remove unnecessary fields. -->
@@ -74,7 +96,7 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
-                    <xpath 
+                    <xpath
                         expr='/form/group[@id=&quot;vaccination_header&quot;]'
                         position='replace'>
                         <group colspan="4" id="vaccination_header">
