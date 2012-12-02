@@ -17,8 +17,21 @@ class MmcPatientData(ModelSQL, ModelView):
             states={'invisible': True})
     family = fields.Many2One('gnuhealth.family', 'x',
             states={'invisible': True})
-    primary_care_doctor = fields.Many2One('gnuhealth.physician', 'x', 
+    primary_care_doctor = fields.Many2One('gnuhealth.physician', 'x',
             states={'invisible': True})
+    current_insurance = fields.Many2One('gnuhealth.insurance', 'x',
+            states={'invisible': True})
+
+    # Expand the selection list of these fields.
+    marital_status = fields.Selection([
+        ('l', 'Live-in'),
+        ('s', 'Single'),
+        ('m', 'Married'),
+        ('w', 'Widowed'),
+        ('d', 'Divorced'),
+        ('x', 'Separated'),
+        ], 'Marital Status', sort=False)
+
 
     # Department of Health required id.
    #doh_id = fields.Char(
