@@ -161,5 +161,35 @@
             </field>
         </record>
 
+        <!-- Add the alternative pregnancy due date field. -->
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_view">
+            <field name="model">gnuhealth.patient.pregnancy</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_patient_pregnancy_view" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <xpath
+                        expr="/form/group[@id=&quot;group_pregnancy_header&quot;]"
+                        position="replace">
+                        <group id="group_pregnancy_header" colspan="4" col="8">
+                            <label name="gravida"/>
+                            <field name="gravida"/>
+                            <label name="lmp"/>
+                            <field name="lmp"/>
+                            <label name="current_pregnancy"/>
+                            <field name="current_pregnancy"/>
+                            <newline/>
+                            <label name="pdd"/>
+                            <field name="pdd"/>
+                            <label name="apdd"/>
+                            <field name="apdd"/>
+                        </group>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
     </data>
 </tryton>

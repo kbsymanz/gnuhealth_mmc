@@ -125,8 +125,21 @@ class MmcMedicationTemplate(ModelSQL, ModelView):
     medicament = fields.Many2One('gnuhealth.medicament', 'Name of Med',
         required=True, help='Prescribed Medicine')
 
-
-
 MmcMedicationTemplate()
+
+
+class MmcPatientPregnancy(ModelSQL, ModelView):
+    'Patient Pregnancy'
+    _name = 'gnuhealth.patient.pregnancy'
+    _description = __doc__
+
+    # Change the label for the due date field.
+    pdd = fields.Function (fields.Date('Due Date'), 'get_pregnancy_data')
+
+    # Add an alternative due date field.
+    apdd = fields.Date('Alt Due Date',
+        help="Enter the alternative pregnancy due date if there is one")
+
+MmcPatientPregnancy()
 
 
