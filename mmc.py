@@ -116,3 +116,17 @@ class MmcPatientMedication(ModelSQL, ModelView):
 MmcPatientMedication()
 
 
+class MmcMedicationTemplate(ModelSQL, ModelView):
+    'Template for medication'
+    _name = 'gnuhealth.medication.template'
+    _description = __doc__
+
+    # Change the field label.
+    medicament = fields.Many2One('gnuhealth.medicament', 'Name of Med',
+        required=True, help='Prescribed Medicine')
+
+
+
+MmcMedicationTemplate()
+
+
