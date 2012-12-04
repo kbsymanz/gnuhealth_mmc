@@ -1,29 +1,36 @@
+# -------------------------------------------------------------------------------
+# mmc.py
+#
+# Customization of GnuHealth for the needs of Mercy Maternity Clinic, Inc.
+# -------------------------------------------------------------------------------
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pyson import Eval, Not, Bool
 
-#class MmcPatient(ModelSQL, ModelView):
-	#'Adapt the gnuhealth.patient to our needs'
-	#_name = 'gnuhealth.patient'
-	#_description = __doc__
-
-#MMC()
 
 class MmcPatientData(ModelSQL, ModelView):
     'Patient related information'
     _name = 'gnuhealth.patient'
     _description = __doc__
 
+    # --------------------------------------------------------
     # Hide these fields
+    # --------------------------------------------------------
     ethnic_group = fields.Many2One('gnuhealth.ethnicity', 'x',
             states={'invisible': True})
+
     family = fields.Many2One('gnuhealth.family', 'x',
             states={'invisible': True})
+
     primary_care_doctor = fields.Many2One('gnuhealth.physician', 'x',
             states={'invisible': True})
+
     current_insurance = fields.Many2One('gnuhealth.insurance', 'x',
             states={'invisible': True})
 
+
+    # --------------------------------------------------------
     # Expand the selection list of these fields.
+    # --------------------------------------------------------
     marital_status = fields.Selection([
         ('l', 'Live-in'),
         ('s', 'Single'),
@@ -34,21 +41,35 @@ class MmcPatientData(ModelSQL, ModelView):
         ], 'Marital Status', sort=False)
 
 
+    # --------------------------------------------------------
+    # Change the label on these fields.
+    # --------------------------------------------------------
+    diseases = fields.One2Many('gnuhealth.patient.disease', 'name', 'Condition')
+
+
+    # --------------------------------------------------------
     # Add Phil Health related fields.
+    # --------------------------------------------------------
     phil_health = fields.Boolean('Phil Health',
         help='Mark if the patient has Phil Health')
+
     phil_health_mcp = fields.Boolean('MCP',
         help="If MCP applies",
         states={'invisible': Not(Bool(Eval('phil_health')))},
         depends=['phil_health'])
+
     phil_health_ncp = fields.Boolean('NCP',
         help="If NCP applies",
         states={'invisible': Not(Bool(Eval('phil_health')))},
         depends=['phil_health'])
 
+
+    # --------------------------------------------------------
     # Add new screening related fields.
+    # --------------------------------------------------------
     gram_stain = fields.Boolean('Gram Stain',
         help="Check if gram stain was done")
+
     breast_self_exam_taught = fields.Boolean('Taught breast self exam',
         help="Check if patient has been taught how to do breast self exams")
 
@@ -63,34 +84,76 @@ class MmcPatientData(ModelSQL, ModelView):
    #def validate_doh_id(self, ids):
 
 
+    # --------------------------------------------------------
     # Set a reasonable default sex for a maternity clinic.
+    # --------------------------------------------------------
     def default_sex(self):
         return 'f'
 
-    # 99.4% of all people in the Philippines are RH positive. Oftentimes
-    # blood tests do not even test for this.
+
+    # --------------------------------------------------------
+    # 99.4% of all people in the Philippines are RH positive. 
+    # Oftentimes blood tests do not even test for this.
+    # --------------------------------------------------------
     def default_rh(self):
         return '+'
 
 
 MmcPatientData()
 
+
+class MmcPatientDiseaseInfo(ModelSQL, ModelView):
+    'Patient Disease History'
+    _name = 'gnuhealth.patient.disease'
+    _description = __doc__
+
+    # --------------------------------------------------------
+    # Change the label of these fields.
+    # --------------------------------------------------------
+    pathology = fields.Many2One('gnuhealth.pathology', 'Condition',
+        required=True, help='Disease')
+
+    status = fields.Selection([
+        ('a', 'acute'),
+        ('c', 'chronic'),
+        ('u', 'unchanged'),
+        ('h', 'healed'),
+        ('i', 'improving'),
+        ('w', 'worsening'),
+        ], 'Status of the condition', select=True, sort=False)
+
+    is_infectious = fields.Boolean('Infectious Condition',
+        help='Check if the patient has an infectious / transmissible condition')
+
+    is_active = fields.Boolean('Active condition')
+
+
+MmcPatientDiseaseInfo()
+
+
 class MmcVaccination(ModelSQL, ModelView):
     'Patient Vaccination information'
     _name = 'gnuhealth.vaccination'
     _description = __doc__
 
+    # --------------------------------------------------------
     # Was the vaccine administered by MMC?
+    # --------------------------------------------------------
     vaccine_by_mmc = fields.Boolean('Administered by MMC',
         help="Check if this vaccine was administered by Mercy Maternity Clinic")
 
+
+    # --------------------------------------------------------
     # Hide these unnecessary fields
+    # --------------------------------------------------------
     vaccine_expiration_date = fields.Date('x', states={'invisible': True})
     vaccine_lot = fields.Char('x', states={'invisible': True})
     institution = fields.Many2One('party.party', 'x', states={'invisible': True})
 
 
+    # --------------------------------------------------------
     # Revise validation to not require the next_dose_date field.
+    # --------------------------------------------------------
     def validate_next_dose_date (self, ids):
         for vaccine_data in self.browse(ids):
             if vaccine_data.next_dose_date is None:
@@ -109,7 +172,9 @@ class MmcPatientMedication(ModelSQL, ModelView):
     _inherits = {'gnuhealth.medication.template': 'template'}
     _description = __doc__
 
+    # --------------------------------------------------------
     # Change the field label.
+    # --------------------------------------------------------
     doctor = fields.Many2One('gnuhealth.physician', 'Name',
         help='Name of person who prescribed the medicament')
 
@@ -121,7 +186,9 @@ class MmcMedicationTemplate(ModelSQL, ModelView):
     _name = 'gnuhealth.medication.template'
     _description = __doc__
 
+    # --------------------------------------------------------
     # Change the field label.
+    # --------------------------------------------------------
     medicament = fields.Many2One('gnuhealth.medicament', 'Name of Med',
         required=True, help='Prescribed Medicine')
 
@@ -133,10 +200,15 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     _name = 'gnuhealth.patient.pregnancy'
     _description = __doc__
 
-    # Change the label for the due date field.
+    # --------------------------------------------------------
+    # Change the field label.
+    # --------------------------------------------------------
     pdd = fields.Function (fields.Date('Due Date'), 'get_pregnancy_data')
 
+
+    # --------------------------------------------------------
     # Add an alternative due date field.
+    # --------------------------------------------------------
     apdd = fields.Date('Alt Due Date',
         help="Enter the alternative pregnancy due date if there is one")
 
