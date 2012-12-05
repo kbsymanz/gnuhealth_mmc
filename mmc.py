@@ -63,6 +63,16 @@ class MmcPatientData(ModelSQL, ModelView):
         states={'invisible': Not(Bool(Eval('phil_health')))},
         depends=['phil_health'])
 
+    phil_health_id = fields.Char('PHIC#',
+        size=14,
+        help="The patients Phil Health ID number",
+        states={
+            'invisible': Not(Bool(Eval('phil_health'))),
+            'required': Not(Bool(Eval('phil_health')))
+        },
+        on_change=['phil_health_id'],
+        depends=['phil_health'])
+
 
     # --------------------------------------------------------
     # Add new screening related fields.
@@ -85,6 +95,32 @@ class MmcPatientData(ModelSQL, ModelView):
 
 
     # --------------------------------------------------------
+    # Format PHIC# in the customary fashion after the user
+    # types it in. User can type with hyphens or not. But don't
+    # change anything unless the field seems correct.
+    # --------------------------------------------------------
+    def on_change_phil_health_id(self, vals):
+        origFld = vals.get('phil_health_id')
+        phic = origFld.replace('-', '')
+        if ((len(phic) == 12) and (phic.isdigit())):
+            newVal = "{0}-{1}-{2}".format(phic[:2], phic[2:11], phic[-1])
+            return {'phil_health_id': newVal}
+        else:
+            return {'phil_health_id': origFld}
+
+    # --------------------------------------------------------
+    # Validate the PHIC #.
+    # --------------------------------------------------------
+    def validate_phil_health_id(self, ids):
+        for patientData in self.browse(ids):
+            phic = patientData.phil_health_id.replace('-', '')
+            if (len(phic) != 12):
+                return False
+            if (not phic.isdigit()):
+                return False
+            return True
+
+    # --------------------------------------------------------
     # Set a reasonable default sex for a maternity clinic.
     # --------------------------------------------------------
     def default_sex(self):
@@ -98,6 +134,20 @@ class MmcPatientData(ModelSQL, ModelView):
     def default_rh(self):
         return '+'
 
+    # --------------------------------------------------------
+    # Add our validations to the class.
+    # --------------------------------------------------------
+    def __init__(self):
+        super(MmcPatientData, self).__init__()
+        self._sql_constraints = [
+            ('name_uniq', 'UNIQUE(name)', 'The Patient already exists !'),
+        ]
+        self._constraints += [
+            ('validate_phil_health_id', 'phil_health_id_format'),
+        ]
+        self._error_messages.update({
+            'phil_health_id_format': 'PHIC# must be 12 numbers',
+        })
 
 MmcPatientData()
 

@@ -31,7 +31,7 @@
                                 <label name="marital_status"/>
                                 <field name="marital_status"/>
                             </group>
-                            <group id="patient_phil_health" colspan="2" col="6">
+                            <group id="patient_phil_health" colspan="2" col="8">
                                 <newline/>
                                 <label name="phil_health"/>
                                 <field name="phil_health"/>
@@ -39,6 +39,8 @@
                                 <field name="phil_health_mcp"/>
                                 <label name="phil_health_ncp"/>
                                 <field name="phil_health_ncp"/>
+                                <label name="phil_health_id"/>
+                                <field name="phil_health_id"/>
                                 <newline/>
                             </group>
                             <group id="patient_info" colspan="4" col="4">
