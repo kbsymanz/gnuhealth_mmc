@@ -8,6 +8,7 @@
     'depends' : [
         'ir',
 	    'health',
+        'health_icd10'
     ],
     'xml': [
         'mmc_view.xml'
