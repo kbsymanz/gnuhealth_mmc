@@ -210,15 +210,85 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
+
+                    <!-- Remove unnecessary fields. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;group_diseases_main&quot;]" position="replace">
+                        <group string="Main" id="group_diseases_main">
+                            <label name="pathology"/>
+                            <field name="pathology"/>
+                            <label name="disease_severity"/>
+                            <field name="disease_severity"/>
+                            <label name="status"/>
+                            <field name="status"/>
+                            <label name="is_infectious"/>
+                            <field name="is_infectious"/>
+                            <label name="is_active"/>
+                            <field name="is_active"/>
+                            <label name="short_comment"/>
+                            <field name="short_comment"/>
+                            <newline/>
+                            <label name="diagnosed_date"/>
+                            <field name="diagnosed_date"/>
+                            <label name="healed_date"/>
+                            <field name="healed_date"/>
+                            <label name="age"/>
+                            <field name="age"/>
+                        </group>
+                    </xpath>
+
+                    <!-- Remove unnecessary fields. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;group_disease_in_pregnancy&quot;]" position="replace">
+                        <group string="Pregnancy" id="group_disease_in_pregnancy">
+                            <label name="weeks_of_pregnancy"/>
+                            <field name="weeks_of_pregnancy"/>
+                        </group>
+                    </xpath>
+
+                    <!-- Remove unnecessary fields. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;group_disease_therapy&quot;]" position="replace">
+                        <group string="Therapy" id="group_disease_therapy">
+                            <label name="is_on_treatment"/>
+                            <field name="is_on_treatment"/>
+                        </group>
+                    </xpath>
+
+                    <!-- Change the name of the form. -->
                     <xpath
                         expr="/form" position="replace_attributes">
                         <form string="Patient Conditions" />
                     </xpath>
+
                 </data>
                 ]]>
             </field>
         </record>
 
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_diseases_tree">
+            <field name="model">gnuhealth.patient.disease</field>
+            <field name="inherit" ref="health.gnuhealth_patient_diseases_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+
+                    <!-- Remove the pregnancy warning field. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;pregnancy_warning&quot;]" position="replace">
+                    </xpath>
+
+                    <!-- Change the name of the tree. -->
+                    <xpath
+                        expr="/tree" position="replace_attributes">
+                        <tree string="Patient conditions" />
+                    </xpath>
+
+                </data>
+                ]]>
+            </field>
+        </record>
 
     </data>
 </tryton>
