@@ -292,5 +292,64 @@
             </field>
         </record>
 
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_prenatal_evaluation_view">
+            <field name="model">gnuhealth.patient.prenatal.evaluation</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_prenatal_evaluation_view" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+
+                    <!-- Remove the mother information fields -->
+                    <xpath
+                        expr="/form/group[@id=&quot;prenatal_evaluation_group_mother&quot;]" position="replace">
+                    </xpath>
+
+                    <!-- Remove the placenta fields -->
+                    <xpath
+                        expr="/form/group[@id=&quot;prenatal_evaluation_group_placenta&quot;]" position="replace">
+                    </xpath>
+
+                    <!-- Remove the EFW field from the fetus information group
+                         as well as all of fetal biometry. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;prenatal_evaluation_group_fetus&quot;]" position="replace">
+                        <label name="fundal_height"/>
+                        <field name="fundal_height"/>
+                        <label name="fetus_heart_rate"/>
+                        <field name="fetus_heart_rate"/>
+                    </xpath>
+
+                </data>
+                ]]>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_prenatal_evaluation_tree">
+            <field name="model">gnuhealth.patient.prenatal.evaluation</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_prenatal_evaluation_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+
+                    <!-- Remove the unneeded fields from the tree -->
+                    <xpath expr="/tree/field[@name=&quot;efw&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;iugr&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;hypertension&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;preeclampsia&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;overweight&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;diabetes&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;invasive_placentation&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;placenta_previa&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;vasa_previa&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;oligohydramnios&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;polihydramnios&quot;]" position="replace"></xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
     </data>
 </tryton>
