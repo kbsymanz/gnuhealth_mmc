@@ -301,9 +301,33 @@
                 <![CDATA[
                 <data>
 
-                    <!-- Remove the mother information fields -->
+                    <!-- Change the header section to admission/discharge only. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;prenatal_evaluation_group_header&quot;]" position="replace">
+                        <group string="Admission/Discharge" id="prenatal_evaluation_group_header" colspan="4" col="4">
+                            <label name="evaluation_date"/>
+                            <field name="evaluation_date"/>
+                            <label name="discharge"/>
+                            <field name="discharge"/>
+                        </group>
+                    </xpath>
+
+                    <!-- Remove the mother information fields and replace them with our own. -->
                     <xpath
                         expr="/form/group[@id=&quot;prenatal_evaluation_group_mother&quot;]" position="replace">
+                        <group string="Mother Information" id="prenatal_evaluation_group_mother" colspan="4" col="8">
+                            <label name="weight"/>
+                            <field name="weight"/>
+                            <label name="systolic"/>
+                            <field name="systolic"/>
+                            <label name="diastolic"/>
+                            <field name="diastolic"/>
+                            <newline/>
+                            <label name="cr"/>
+                            <field name="cr"/>
+                            <label name="rr"/>
+                            <field name="rr"/>
+                        </group>
                     </xpath>
 
                     <!-- Remove the placenta fields -->
@@ -311,14 +335,30 @@
                         expr="/form/group[@id=&quot;prenatal_evaluation_group_placenta&quot;]" position="replace">
                     </xpath>
 
-                    <!-- Remove the EFW field from the fetus information group
-                         as well as all of fetal biometry. -->
+                    <!-- Remove the unnecessary fields, add new ones, and move some around. -->
                     <xpath
                         expr="/form/group[@id=&quot;prenatal_evaluation_group_fetus&quot;]" position="replace">
-                        <label name="fundal_height"/>
-                        <field name="fundal_height"/>
-                        <label name="fetus_heart_rate"/>
-                        <field name="fetus_heart_rate"/>
+                        <group string="Fetus Information" id="prenatal_evaluation_group_fetus" colspan="4" col="8">
+                            <label name="gestational_weeks"/>
+                            <field name="gestational_weeks"/>
+                            <label name="position"/>
+                            <field name="position"/>
+                            <newline/>
+                            <label name="fundal_height"/>
+                            <field name="fundal_height"/>
+                            <label name="fetus_heart_rate"/>
+                            <field name="fetus_heart_rate"/>
+                        </group>
+                    </xpath>
+
+                    <xpath
+                        expr="/form/group[@id=&quot;prenatal_evaluation_group_fetus&quot;]" position="after">
+                        <group string="Examiner and next Appt" id="prenatal_evaluation_group_footer" colspan="4" col="8">
+                            <label name="examiner"/>
+                            <field name="examiner"/>
+                            <label name="next_appt"/>
+                            <field name="next_appt"/>
+                        </group>
                     </xpath>
 
                 </data>

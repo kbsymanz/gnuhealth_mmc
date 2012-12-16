@@ -280,7 +280,8 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     # --------------------------------------------------------
     discharge = fields.DateTime('Discharge', help='Time the patient left')
     weight = fields.Integer("Weight", help="Mother's weight in kilos")
-    bp = fields.Char("B/P", help="Mother's blood pressure")
+    systolic = fields.Integer('Systolic Pressure')
+    diastolic = fields.Integer('Diastolic Pressure')
     cr = fields.Integer("CR", help="Mother's heart rate")
     rr = fields.Integer("RR", help="Mother's respitory rate")
     position = fields.Char("Position", help="Baby's position")
