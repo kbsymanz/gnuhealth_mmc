@@ -128,7 +128,7 @@ class MmcPatientData(ModelSQL, ModelView):
 
 
     # --------------------------------------------------------
-    # 99.4% of all people in the Philippines are RH positive. 
+    # 99.4% of all people in the Philippines are RH positive.
     # Oftentimes blood tests do not even test for this.
     # --------------------------------------------------------
     def default_rh(self):
@@ -263,5 +263,30 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
         help="Enter the alternative pregnancy due date if there is one")
 
 MmcPatientPregnancy()
+
+
+class MmcPrenatalEvaluation(ModelSQL, ModelView):
+    'Prenatal and Antenatal Evaluations'
+    _name = 'gnuhealth.patient.prenatal.evaluation'
+    _description = __doc__
+
+    # --------------------------------------------------------
+    # Change the field labels.
+    # --------------------------------------------------------
+    evaluation_date = fields.DateTime('Admission', required=True)
+
+    # --------------------------------------------------------
+    # Add additional fields.
+    # --------------------------------------------------------
+    discharge = fields.DateTime('Discharge', help='Time the patient left')
+    weight = fields.Integer("Weight", help="Mother's weight in kilos")
+    bp = fields.Char("B/P", help="Mother's blood pressure")
+    cr = fields.Integer("CR", help="Mother's heart rate")
+    rr = fields.Integer("RR", help="Mother's respitory rate")
+    position = fields.Char("Position", help="Baby's position")
+    examiner = fields.Char('Examiner', help="Who did the examination?")
+    next_appt = fields.Date('Next Scheduled Date', help="Date of next prenatal exam")
+
+MmcPrenatalEvaluation()
 
 
