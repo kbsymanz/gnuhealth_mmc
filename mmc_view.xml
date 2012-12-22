@@ -375,7 +375,9 @@
                 <data>
 
                     <!-- Remove the unneeded fields from the tree -->
+                    <xpath expr="/tree/field[@name=&quot;evaluation_date&quot;]" position="replace"></xpath>
                     <xpath expr="/tree/field[@name=&quot;efw&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;gestational_weeks&quot;]" position="replace"></xpath>
                     <xpath expr="/tree/field[@name=&quot;iugr&quot;]" position="replace"></xpath>
                     <xpath expr="/tree/field[@name=&quot;hypertension&quot;]" position="replace"></xpath>
                     <xpath expr="/tree/field[@name=&quot;preeclampsia&quot;]" position="replace"></xpath>
@@ -386,6 +388,34 @@
                     <xpath expr="/tree/field[@name=&quot;vasa_previa&quot;]" position="replace"></xpath>
                     <xpath expr="/tree/field[@name=&quot;oligohydramnios&quot;]" position="replace"></xpath>
                     <xpath expr="/tree/field[@name=&quot;polihydramnios&quot;]" position="replace"></xpath>
+
+                    <!-- Add other fields back in. -->
+                    <xpath expr="/tree/field[@name=&quot;fundal_height&quot;]" position="before">
+                        <field name="eval_date_only" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;eval_date_only&quot;]" position="after">
+                        <field name="weight" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;weight&quot;]" position="after">
+                        <field name="bp" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;bp&quot;]" position="after">
+                        <field name="cr" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;cr&quot;]" position="after">
+                        <field name="gestational_age" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;fetus_heart_rate&quot;]" position="after">
+                        <field name="position" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;position&quot;]" position="after">
+                        <field name="examiner" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;examiner&quot;]" position="after">
+                        <field name="next_appt" expand="1"/>
+                    </xpath>
+
+
                 </data>
                 ]]>
             </field>

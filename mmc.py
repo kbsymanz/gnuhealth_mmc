@@ -6,6 +6,7 @@
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pyson import Eval, Not, Bool
 
+import datetime
 
 class MmcPatientData(ModelSQL, ModelView):
     'Patient related information'
@@ -270,6 +271,34 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     _name = 'gnuhealth.patient.prenatal.evaluation'
     _description = __doc__
 
+    def get_patient_evaluation_data(self, ids, name):
+        result = {}
+
+        for evaluation_data in self.browse(ids):
+
+            if name == 'gestational_weeks':
+                gestational_age = datetime.datetime.date(evaluation_data.evaluation_date) - evaluation_data.name.lmp
+
+                result[evaluation_data.id] = (gestational_age.days)/7
+
+            if name == 'gestational_days':
+                gestational_age = datetime.datetime.date(evaluation_data.evaluation_date) - evaluation_data.name.lmp
+
+                result[evaluation_data.id] = gestational_age.days
+
+            if name == 'gestational_age':
+                gestational_age = datetime.datetime.date(evaluation_data.evaluation_date) - evaluation_data.name.lmp
+
+                result[evaluation_data.id] = "{0} {1}/7".format((gestational_age.days)/7, (gestational_age.days)%7)
+
+            if name == 'bp':
+                result[evaluation_data.id] = "{0}/{1}".format(evaluation_data.systolic, evaluation_data.diastolic)
+
+            if name == 'eval_date_only':
+                result[evaluation_data.id] = datetime.datetime.date(evaluation_data.evaluation_date)
+
+        return result
+
     # --------------------------------------------------------
     # Change the field labels.
     # --------------------------------------------------------
@@ -287,6 +316,32 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     position = fields.Char("Position", help="Baby's position")
     examiner = fields.Char('Examiner', help="Who did the examination?")
     next_appt = fields.Date('Next Scheduled Date', help="Date of next prenatal exam")
+    temperature = fields.Float('Temperature', help='Temperature in celcius')
+
+    # --------------------------------------------------------
+    # Add a gestational_age field. Health_gyneco has two similar
+    # fields: gestational_weeks and gestational_days. The former
+    # is only granular to the week, the later to the day. MMC
+    # staff is used to the GA field being the number of weeks and
+    # a fractional part with the denominator the number 7, e.g.
+    # 33 2/7. Our gestational_age field will attempt to get close
+    # to that.
+    # --------------------------------------------------------
+    gestational_age = fields.Function(fields.Char('GA'),
+        'get_patient_evaluation_data')
+
+    # --------------------------------------------------------
+    # Add a convenience function that displays the blood pressure
+    # as one field instead of two. Useful for the tree view.
+    # --------------------------------------------------------
+    bp = fields.Function(fields.Char('B/P'), 'get_patient_evaluation_data')
+
+    # --------------------------------------------------------
+    # Add a display field for the tree view that only shows the
+    # admission date and not the time.
+    # --------------------------------------------------------
+    eval_date_only = fields.Function(fields.Date('Date'), 'get_patient_evaluation_data')
+
 
 MmcPrenatalEvaluation()
 
