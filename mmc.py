@@ -313,10 +313,10 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     diastolic = fields.Integer('Diastolic Pressure')
     cr = fields.Integer("CR", help="Mother's heart rate")
     rr = fields.Integer("RR", help="Mother's respitory rate")
+    temperature = fields.Float('Temp', help='Temperature in celcius of the mother')
     position = fields.Char("Position", help="Baby's position")
     examiner = fields.Char('Examiner', help="Who did the examination?")
     next_appt = fields.Date('Next Scheduled Date', help="Date of next prenatal exam")
-    temperature = fields.Float('Temperature', help='Temperature in celcius')
 
     # --------------------------------------------------------
     # Add a gestational_age field. Health_gyneco has two similar

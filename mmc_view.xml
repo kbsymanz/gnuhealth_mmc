@@ -327,6 +327,8 @@
                             <field name="cr"/>
                             <label name="rr"/>
                             <field name="rr"/>
+                            <label name="temperature"/>
+                            <field name="temperature"/>
                         </group>
                     </xpath>
 
@@ -401,6 +403,12 @@
                     </xpath>
                     <xpath expr="/tree/field[@name=&quot;bp&quot;]" position="after">
                         <field name="cr" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;cr&quot;]" position="after">
+                        <field name="rr" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;rr&quot;]" position="after">
+                        <field name="temperature" expand="1"/>
                     </xpath>
                     <xpath expr="/tree/field[@name=&quot;cr&quot;]" position="after">
                         <field name="gestational_age" expand="1"/>
