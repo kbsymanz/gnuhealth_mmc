@@ -263,6 +263,27 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     apdd = fields.Date('Alt Due Date',
         help="Enter the alternative pregnancy due date if there is one")
 
+    # --------------------------------------------------------
+    # Add partner information for this pregnancy.
+    # --------------------------------------------------------
+    partner_first_name = fields.Char('Partner first name',
+        help="The partner or husband's first name")
+    partner_last_name = fields.Char('Partner last name',
+        help="The partner or husband's last name")
+    partner_age = fields.Integer('Partner age',
+        help="The age in years of the partner")
+    partner_employment = fields.Char('Partner work',
+        help="The work of the partner")
+    partner_education = fields.Char('Partner education',
+        help="The amount of education that the partner has completed")
+    partner_income = fields.Integer('Partner income',
+        help="The amount of pesos per month the partner earns")
+
+    patient_income = fields.Integer('Patient income',
+        help="The amount of pesos per month the patient earns")
+
+
+
 MmcPatientPregnancy()
 
 

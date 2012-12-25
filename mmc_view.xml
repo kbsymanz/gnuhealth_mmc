@@ -173,7 +173,6 @@
             </field>
         </record>
 
-        <!-- Add the alternative pregnancy due date field. -->
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_view">
             <field name="model">gnuhealth.patient.pregnancy</field>
             <field name="inherit" ref="health_gyneco.gnuhealth_patient_pregnancy_view" />
@@ -181,6 +180,8 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
+
+                    <!-- Add the alternative pregnancy due date field. -->
                     <xpath
                         expr="/form/group[@id=&quot;group_pregnancy_header&quot;]"
                         position="replace">
@@ -198,6 +199,30 @@
                             <field name="apdd"/>
                         </group>
                     </xpath>
+
+                    <!-- Add a section for the partner information for this pregnancy. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;group_pregnancy_header&quot;]"
+                        position="after">
+                        <group string="Partner Information" id="group_pregnancy_partner" colspan="4" col="8">
+                            <label name="partner_first_name"/>
+                            <field name="partner_first_name"/>
+                            <label name="partner_last_name"/>
+                            <field name="partner_last_name"/>
+                            <label name="partner_age"/>
+                            <field name="partner_age"/>
+                            <newline/>
+                            <label name="partner_employment"/>
+                            <field name="partner_employment"/>
+                            <label name="partner_education"/>
+                            <field name="partner_education"/>
+                            <label name="partner_income"/>
+                            <field name="partner_income"/>
+                            <label name="patient_income"/>
+                            <field name="patient_income"/>
+                        </group>
+                    </xpath>
+
                 </data>
                 ]]>
             </field>
