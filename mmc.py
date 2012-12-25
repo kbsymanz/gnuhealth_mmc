@@ -3,10 +3,27 @@
 #
 # Customization of GnuHealth for the needs of Mercy Maternity Clinic, Inc.
 # -------------------------------------------------------------------------------
-from trytond.model import ModelView, ModelSQL, fields
+from trytond.model import ModelView, ModelSingleton, ModelSQL, fields
 from trytond.pyson import Eval, Not, Bool
+from trytond.pool import Pool
 
 import datetime
+import logging
+
+mmcLog = logging.getLogger('mmc')
+
+class MmcSequences(ModelSingleton, ModelSQL, ModelView):
+    "Sequences for MMC"
+
+    _description = __doc__
+    _name = "mmc.sequences"
+
+    doh_sequence = fields.Property(fields.Many2One('ir.sequence',
+        'DOH Sequence', domain=[('code', '=', 'mmc.doh')],
+        required=True))
+
+MmcSequences()
+
 
 class MmcPatientData(ModelSQL, ModelView):
     'Patient related information'
@@ -69,7 +86,7 @@ class MmcPatientData(ModelSQL, ModelView):
         help="The patients Phil Health ID number",
         states={
             'invisible': Not(Bool(Eval('phil_health'))),
-            'required': Not(Bool(Eval('phil_health')))
+            'required': Bool(Eval('phil_health'))
         },
         on_change=['phil_health_id'],
         depends=['phil_health'])
@@ -90,7 +107,7 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     doh_id = fields.Char('DOH ID',
         size=8,
-        help="Dept of Health id", required=True,
+        help="Dept of Health id", required=False,
         on_change=['doh_id'])
 
     # --------------------------------------------------------
@@ -101,11 +118,10 @@ class MmcPatientData(ModelSQL, ModelView):
     def on_change_doh_id(self, vals):
         origFld = vals.get('doh_id')
         doh = origFld.replace('-', '')
+        val = origFld
         if ((len(doh) == 6) and (doh.isdigit())):
-            newVal = "{0}-{1}-{2}".format(doh[:2], doh[2:4], doh[4:6])
-            return {'doh_id': newVal}
-        else:
-            return {'doh_id': origFld}
+            val = "{0}-{1}-{2}".format(doh[:2], doh[2:4], doh[4:6])
+        return {'doh_id': val}
 
 
     # --------------------------------------------------------
@@ -116,21 +132,39 @@ class MmcPatientData(ModelSQL, ModelView):
     def on_change_phil_health_id(self, vals):
         origFld = vals.get('phil_health_id')
         phic = origFld.replace('-', '')
+        val = origFld
         if ((len(phic) == 12) and (phic.isdigit())):
-            newVal = "{0}-{1}-{2}".format(phic[:2], phic[2:11], phic[-1])
-            return {'phil_health_id': newVal}
-        else:
-            return {'phil_health_id': origFld}
+            val = "{0}-{1}-{2}".format(phic[:2], phic[2:11], phic[-1])
+        return {'phil_health_id': val}
+
+    # --------------------------------------------------------
+    # Validate the DOH ID.
+    # --------------------------------------------------------
+    def validate_doh_id(self, ids):
+        for patientData in self.browse(ids):
+            if (patientData.doh_id == None or len(patientData.doh_id) == 0):
+                return True
+            doh = patientData.doh_id.replace('-', '')
+            if (len(doh) != 6):
+                return False
+            if (not doh.isdigit()):
+                return False
+            return True
 
     # --------------------------------------------------------
     # Validate the PHIC #.
     # --------------------------------------------------------
     def validate_phil_health_id(self, ids):
         for patientData in self.browse(ids):
+            if not patientData.phil_health:
+                # if Phil Health does not apply, then we are fine.
+                return True
             phic = patientData.phil_health_id.replace('-', '')
             if (len(phic) != 12):
+                mmcLog.info('Phil Health id is not the correct length')
                 return False
             if (not phic.isdigit()):
+                mmcLog.info('Phil Health id is not a number')
                 return False
             return True
 
@@ -158,10 +192,34 @@ class MmcPatientData(ModelSQL, ModelView):
         ]
         self._constraints += [
             ('validate_phil_health_id', 'phil_health_id_format'),
+            ('validate_doh_id', 'validate_doh_id_format'),
         ]
         self._error_messages.update({
             'phil_health_id_format': 'PHIC# must be 12 numbers',
+            'validate_doh_id_format': 'Department of Health ID must be 6 numbers'
         })
+
+    # --------------------------------------------------------
+    # Create a Department of Health id automatically, but it
+    # can be overridden by the user, if desired, to another
+    # number or a blank value.
+    # --------------------------------------------------------
+    def create(self, values):
+        if not values.get('doh_id'):
+            values = values.copy()
+            sequence_obj = Pool().get('ir.sequence')
+            config_obj = Pool().get('mmc.sequences')
+            config = config_obj.browse(1)
+            # --------------------------------------------------------
+            # The sequence is prefixed with the current 4 digit year
+            # but we need only a two digit year and we like it formatted
+            # a certain way.
+            # --------------------------------------------------------
+            seq = sequence_obj.get_id(config.doh_sequence.id)[2:]
+            values['doh_id'] = "{0}-{1}-{2}".format(seq[:2], seq[2:4], seq[4:6])
+
+        return super(MmcPatientData, self).create(values)
+
 
 MmcPatientData()
 

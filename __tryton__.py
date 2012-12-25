@@ -11,7 +11,8 @@
         'health_icd10'
     ],
     'xml': [
-        'mmc_view.xml'
+        'mmc_view.xml',
+        'data/mmc_sequences.xml',
     ],
     'translation': [
     ],

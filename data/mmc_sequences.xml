@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tryton>
+    <data skiptest="1">
+
+        <!-- Department of Health ID -->
+        <record id="seq_type_mmc_doh" model="ir.sequence.type">
+            <field name="name">DOH</field>
+            <field name="code">mmc.doh</field>
+        </record>
+        <record id="seq_mmc_doh" model="ir.sequence">
+            <field name="name">DOH</field>
+            <field name="code">mmc.doh</field>
+            <field name="prefix">${year}</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record model="ir.property" id="property_mmc_doh_sequence">
+            <field name="field"
+                search="[('model.model', '=', 'mmc.sequences'), ('name', '=', 'doh_sequence')]"/>
+            <field name="value" eval="'ir.sequence,' + str(ref('seq_mmc_doh'))"/>
+        </record>
+
+    </data>
+</tryton>
