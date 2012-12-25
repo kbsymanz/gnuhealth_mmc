@@ -85,14 +85,27 @@ class MmcPatientData(ModelSQL, ModelView):
         help="Check if patient has been taught how to do breast self exams")
 
 
+    # --------------------------------------------------------
     # Department of Health required id.
-   #doh_id = fields.Char(
-           #'DOH Id',
-           #help="Dept of Health id",
-           #required=True)
+    # --------------------------------------------------------
+    doh_id = fields.Char('DOH ID',
+        size=8,
+        help="Dept of Health id", required=True,
+        on_change=['doh_id'])
 
-   ## Insure unique DOH Ids are used.
-   #def validate_doh_id(self, ids):
+    # --------------------------------------------------------
+    # Format DOH ID # in the customary fashion after the user
+    # types it in. User can type with hyphens or not. But don't
+    # change anything unless the field seems correct.
+    # --------------------------------------------------------
+    def on_change_doh_id(self, vals):
+        origFld = vals.get('doh_id')
+        doh = origFld.replace('-', '')
+        if ((len(doh) == 6) and (doh.isdigit())):
+            newVal = "{0}-{1}-{2}".format(doh[:2], doh[2:4], doh[4:6])
+            return {'doh_id': newVal}
+        else:
+            return {'doh_id': origFld}
 
 
     # --------------------------------------------------------

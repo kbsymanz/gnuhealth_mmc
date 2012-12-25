@@ -132,7 +132,6 @@
             </field>
         </record>
 
-        <!-- Remove the Colposcopy page since it is not used. -->
         <record model="ir.ui.view" id="mmc_patient_view_form">
             <field name="model">gnuhealth.patient</field>
             <field name="inherit" ref="health.gnuhealth_patient_view_form" />
@@ -140,6 +139,8 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <data>
+
+                    <!-- Remove the Colposcopy page since it is not used. -->
                     <xpath
                         expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_pap_colpo&quot;]"
                         position="replace">
@@ -168,10 +169,26 @@
                             </group>
                         </page>
                     </xpath>
+
+                    <!-- Remove the sex field and replace with the DOH ID. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;patient_main_info&quot;]/group[@id=&quot;patient_main_info1&quot;]"
+                        position="replace">
+                        <group col="6" id="patient_main_info1">
+                            <label name="name"/>
+                            <field name="name"/>
+                            <label name="identification_code"/>
+                            <field name="identification_code"/>
+                            <label name="doh_id"/>
+                            <field name="doh_id"/>
+                        </group>
+                    </xpath>
+
                 </data>
                 ]]>
             </field>
         </record>
+
 
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_view">
             <field name="model">gnuhealth.patient.pregnancy</field>
