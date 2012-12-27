@@ -76,6 +76,36 @@
             </field>
         </record>
 
+
+        <record model="ir.ui.view" id="gnuhealth_patient_tree">
+            <field name="model">gnuhealth.patient</field>
+            <field name="inherit" ref="health.gnuhealth_patient_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+
+                    <!-- Remove the SSN field. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;ssn&quot;]" position="replace">
+                    </xpath>
+
+                    <!-- Add in some new fields. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;identification_code&quot;]" position="after">
+                        <field name="doh_id" expand="1"/>
+                    </xpath>
+                    <xpath
+                        expr="/tree/field[@name=&quot;doh_id&quot;]" position="after">
+                        <field name="phil_health_id" expand="1"/>
+                    </xpath>
+
+                </data>
+                ]]>
+            </field>
+        </record>
+
+
         <!-- Change the wording on the medication extra info form. -->
         <record model="ir.ui.view" id="gnuhealth_patient_medication_form">
             <field name="model">gnuhealth.patient.medication</field>
