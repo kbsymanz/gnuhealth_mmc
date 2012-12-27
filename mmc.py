@@ -108,7 +108,7 @@ class MmcPatientData(ModelSQL, ModelView):
     doh_id = fields.Char('DOH ID',
         size=8,
         help="Dept of Health id", required=False,
-        on_change=['doh_id'])
+        select=True, on_change=['doh_id'])
 
     # --------------------------------------------------------
     # Format DOH ID # in the customary fashion after the user
@@ -189,6 +189,7 @@ class MmcPatientData(ModelSQL, ModelView):
         super(MmcPatientData, self).__init__()
         self._sql_constraints = [
             ('name_uniq', 'UNIQUE(name)', 'The Patient already exists !'),
+            ('doh_uniq', 'UNIQUE(doh_id)', 'The DOH id already exists !'),
         ]
         self._constraints += [
             ('validate_phil_health_id', 'phil_health_id_format'),
