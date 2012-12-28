@@ -328,7 +328,7 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     # --------------------------------------------------------
     pdd = fields.Function (fields.Date('Due Date'), 'get_pregnancy_data')
     perinatal = fields.One2Many('gnuhealth.perinatal', 'name', 'Labor')
-    puerperium_monitor = fields.One2Many('gnuhealth.puerperium.monitor', 
+    puerperium_monitor = fields.One2Many('gnuhealth.puerperium.monitor',
         'name', 'Postpartum')
 
 
@@ -469,6 +469,26 @@ class MmcPerinatal(ModelSQL, ModelView):
         ('o', 'Other'),
         ], 'Delivery mode', sort=False)
 
+
+    # --------------------------------------------------------
+    # Placenta delivery fields.
+    # --------------------------------------------------------
+    placenta_datetime = fields.DateTime('Placenta delivery')
+    placenta_expulsion = fields.Selection([
+        ('s', 'Schult'),
+        ('d', 'Duncan'),
+        ], 'Placenta expulsion', sort=False)
+    placenta_delivery = fields.Selection([
+        ('s', 'Spontaneous'),
+        ('cct', 'CCT'),
+        ('ma', 'Manual Assist'),
+        ('mr', 'Manual Removal'),
+        ], 'Placenta delivery type', sort=False)
+    placenta_duration = fields.Integer('Duration (min)',
+        help="Duration of the placenta delivery in minutes")
+    ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
+
+
 MmcPerinatal()
 
 
@@ -484,7 +504,7 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
     f_frequency = fields.Integer('FHT')
 
     # --------------------------------------------------------
-    # Add a new value and make it the default.
+    # Add a new value.
     # --------------------------------------------------------
     fetus_position = fields.Selection([
         ('c', 'Cephalic'),
@@ -495,6 +515,9 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
         ('t', 'Footling Breech'),
         ], 'Fetus Position', sort=False)
 
+    # --------------------------------------------------------
+    # Default field values.
+    # --------------------------------------------------------
     def default_fetus_position(self):
         return 'c'
 

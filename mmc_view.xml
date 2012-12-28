@@ -543,6 +543,7 @@
                         </page>
                     </xpath>
 
+                    <!-- Add placenta fields and rename the notebook. -->
                     <xpath expr="/form/notebook/page[@id=&quot;perinatal_misc&quot;]" position="replace">
                         <page id="perinatal_misc" string="3rd Stage">
 
@@ -559,16 +560,29 @@
                             </group>
 
                             <newline/>
-                            <separator colspan="4" id="separator_placenta" string="Placenta anomalies"/>
+                            <separator colspan="4" id="separator_placenta" string="Placenta information"/>
                             <newline/>
 
                             <group colspan="4" col="10" id="group_placenta">
+                                <label name="placenta_datetime"/>
+                                <field name="placenta_datetime"/>
+                                <label name="placenta_duration"/>
+                                <field name="placenta_duration"/>
+                                <newline/>
                                 <label name="placenta_incomplete"/>
                                 <field name="placenta_incomplete"/>
                                 <label name="placenta_retained"/>
                                 <field name="placenta_retained"/>
                                 <label name="abruptio_placentae"/>
                                 <field name="abruptio_placentae"/>
+                                <newline/>
+                                <label name="placenta_expulsion"/>
+                                <field name="placenta_expulsion"/>
+                                <label name="placenta_delivery"/>
+                                <field name="placenta_delivery"/>
+                                <newline/>
+                                <label name="ebl"/>
+                                <field name="ebl"/>
                             </group>
 
                         </page>
@@ -612,7 +626,7 @@
                         <tree string="Labor Monitor" />
                     </xpath>
 
-                    <!-- Remove the fetus position field. -->
+                    <!-- Remove the fetus position field from the tree view. -->
                     <xpath expr="/tree/field[@name=&quot;fetus_position&quot;]" position="replace"></xpath>
 
                 </data>
@@ -622,3 +636,4 @@
 
     </data>
 </tryton>
+
