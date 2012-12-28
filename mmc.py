@@ -408,12 +408,12 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     # Add additional fields.
     # --------------------------------------------------------
     discharge = fields.DateTime('Discharge', help='Time the patient left')
-    weight = fields.Integer("Weight", help="Mother's weight in kilos")
+    weight = fields.Numeric("Weight (kg)", (3,1), help="Mother's weight in kilos")
     systolic = fields.Integer('Systolic Pressure')
     diastolic = fields.Integer('Diastolic Pressure')
     cr = fields.Integer("CR", help="Mother's heart rate")
     rr = fields.Integer("RR", help="Mother's respitory rate")
-    temperature = fields.Float('Temp', help='Temperature in celcius of the mother')
+    temperature = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
     position = fields.Char("Position", help="Baby's position")
     examiner = fields.Char('Examiner', help="Who did the examination?")
     next_appt = fields.Date('Next Scheduled Date', help="Date of next prenatal exam")
