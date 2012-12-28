@@ -483,6 +483,20 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
     frequency = fields.Integer('CR')
     f_frequency = fields.Integer('FHT')
 
+    # --------------------------------------------------------
+    # Add a new value and make it the default.
+    # --------------------------------------------------------
+    fetus_position = fields.Selection([
+        ('c', 'Cephalic'),
+        ('o', 'Occiput / Cephalic Posterior'),
+        ('fb', 'Frank Breech'),
+        ('cb', 'Complete Breech'),
+        ('t', 'Transverse Lie'),
+        ('t', 'Footling Breech'),
+        ], 'Fetus Position', sort=False)
+
+    def default_fetus_position(self):
+        return 'c'
 
 MmcPerinatalMonitor()
 

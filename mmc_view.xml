@@ -594,14 +594,6 @@
                         <form string="Labor Monitor" />
                     </xpath>
 
-                    <!-- Remove the fetus position field. -->
-                    <xpath expr="/form/group[@id=&quot;group_perinatal_fetus_monitor&quot;]" position="replace">
-                        <label name="f_frequency"/>
-                        <field name="f_frequency"/>
-                        <newline/>
-                    </xpath>
-
-
                 </data>
                 ]]>
             </field>
