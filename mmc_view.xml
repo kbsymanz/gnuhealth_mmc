@@ -594,11 +594,39 @@
                         <form string="Labor Monitor" />
                     </xpath>
 
+                    <!-- Remove the fetus position field. -->
+                    <xpath expr="/form/group[@id=&quot;group_perinatal_fetus_monitor&quot;]" position="replace">
+                        <label name="f_frequency"/>
+                        <field name="f_frequency"/>
+                        <newline/>
+                    </xpath>
+
+
                 </data>
                 ]]>
             </field>
         </record>
 
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_perinatal_monitor_tree">
+            <field name="model">gnuhealth.perinatal.monitor</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_perinatal_monitor_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <!-- Change the title. -->
+                    <xpath expr="/tree" position="replace_attributes">
+                        <tree string="Labor Monitor" />
+                    </xpath>
+
+                    <!-- Remove the fetus position field. -->
+                    <xpath expr="/tree/field[@name=&quot;fetus_position&quot;]" position="replace"></xpath>
+
+                </data>
+                ]]>
+            </field>
+        </record>
 
     </data>
 </tryton>

@@ -446,3 +446,19 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
 MmcPrenatalEvaluation()
 
 
+class MmcPerinatalMonitor(ModelSQL, ModelView):
+    'Perinatal Monitor'
+    _name = 'gnuhealth.perinatal.monitor'
+    _description = __doc__
+
+    # --------------------------------------------------------
+    # Rename the labels of these fields.
+    # --------------------------------------------------------
+    f_frequency = fields.Integer('FHT')
+
+
+MmcPerinatalMonitor()
+
+
+
+
