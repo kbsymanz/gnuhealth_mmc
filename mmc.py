@@ -324,9 +324,12 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     _description = __doc__
 
     # --------------------------------------------------------
-    # Change the field label.
+    # Change the field labels.
     # --------------------------------------------------------
     pdd = fields.Function (fields.Date('Due Date'), 'get_pregnancy_data')
+    perinatal = fields.One2Many('gnuhealth.perinatal', 'name', 'Labor')
+    puerperium_monitor = fields.One2Many('gnuhealth.puerperium.monitor', 
+        'name', 'Postpartum')
 
 
     # --------------------------------------------------------
