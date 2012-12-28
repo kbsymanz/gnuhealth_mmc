@@ -399,6 +399,10 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     # Change the field labels.
     # --------------------------------------------------------
     evaluation_date = fields.DateTime('Admission', required=True)
+    fetus_heart_rate = fields.Integer('FHT', help="Fetus heart rate")
+    fundal_height = fields.Integer('FH',
+        help="Distance between the symphysis pubis and the uterine fundus " \
+        "(S-FD) in cm")
 
     # --------------------------------------------------------
     # Add additional fields.
