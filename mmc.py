@@ -446,6 +446,32 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
 MmcPrenatalEvaluation()
 
 
+class MmcPerinatal(ModelSQL, ModelView):
+    'Perinatal Information'
+    _name = 'gnuhealth.perinatal'
+    _description = __doc__
+
+    def get_perinatal_information(self, ids, name):
+        result = {}
+
+        for perinatal_data in self.browse(ids):
+            if name == 'gestational_weeks':
+                gestational_age = datetime.datetime.date(perinatal_data.admission_date) - perinatal_data.name.lmp
+                result[perinatal_data.id] = (gestational_age.days)/7
+
+        return result
+
+    # --------------------------------------------------------
+    # Change selection list.
+    # --------------------------------------------------------
+    start_labor_mode = fields.Selection([
+        ('nsd', 'NSD'),
+        ('o', 'Other'),
+        ], 'Delivery mode', sort=False)
+
+MmcPerinatal()
+
+
 class MmcPerinatalMonitor(ModelSQL, ModelView):
     'Perinatal Monitor'
     _name = 'gnuhealth.perinatal.monitor'
@@ -454,6 +480,7 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Rename the labels of these fields.
     # --------------------------------------------------------
+    frequency = fields.Integer('CR')
     f_frequency = fields.Integer('FHT')
 
 
