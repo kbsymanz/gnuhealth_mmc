@@ -330,6 +330,11 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     perinatal = fields.One2Many('gnuhealth.perinatal', 'name', 'Labor')
     puerperium_monitor = fields.One2Many('gnuhealth.puerperium.monitor',
         'name', 'Postpartum')
+    pregnancy_end_date = fields.DateTime ('Date/time of birth',
+        states={
+            'invisible': Bool(Eval('current_pregnancy')),
+            'required': Not(Bool(Eval('current_pregnancy'))),
+            })
 
 
     # --------------------------------------------------------
@@ -524,5 +529,47 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
 MmcPerinatalMonitor()
 
 
+class MmcPuerperiumMonitor(ModelSQL, ModelView):
+    'Puerperium Monitor'
+    _name = 'gnuhealth.puerperium.monitor'
+    _description = __doc__
+
+    # --------------------------------------------------------
+    # Change the labels of these fields.
+    # --------------------------------------------------------
+    temperature = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
+    frequency = fields.Integer('CR')
+
+    # --------------------------------------------------------
+    # Add additional fields.
+    # --------------------------------------------------------
+    ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
+    examiner = fields.Char('Examiner', required=True)
+
+    # --------------------------------------------------------
+    # Add a convenience function that displays the blood pressure
+    # as one field instead of two. Useful for the tree view.
+    # --------------------------------------------------------
+    bp = fields.Function(fields.Char('B/P'), 'get_patient_evaluation_data')
+
+    # --------------------------------------------------------
+    # Add a display field for the tree view that only shows the
+    # admission date and not the time.
+    # --------------------------------------------------------
+    eval_date_only = fields.Function(fields.Date('Date'), 'get_patient_evaluation_data')
+
+    def get_patient_evaluation_data(self, ids, name):
+        result = {}
+
+        for evaluation_data in self.browse(ids):
+            if name == 'bp':
+                result[evaluation_data.id] = "{0}/{1}".format(evaluation_data.systolic, evaluation_data.diastolic)
+
+            if name == 'eval_date_only':
+                result[evaluation_data.id] = datetime.datetime.date(evaluation_data.date)
+
+        return result
+
+MmcPuerperiumMonitor()
 
 

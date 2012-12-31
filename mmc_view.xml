@@ -634,6 +634,95 @@
             </field>
         </record>
 
+
+        <record model="ir.ui.view" id="gnuhealth_puerperium_monitor_view">
+            <field name="model">gnuhealth.puerperium.monitor</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_puerperium_monitor_view" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <!-- Change the title. -->
+                    <xpath expr="/form" position="replace_attributes">
+                        <form string="Postpartum Monitor" />
+                    </xpath>
+
+                    <!-- Change the header section, add a field. -->
+                    <xpath expr="/form/group[@id=&quot;group_puerperium_monitor&quot;]" position="replace">
+                        <label name="date"/>
+                        <field name="date"/>
+                        <label name="examiner"/>
+                        <field name="examiner"/>
+                    </xpath>
+
+                    <!-- Add vital signs and move fundal height here. -->
+                    <xpath expr="/form/group[@id=&quot;group_lochia&quot;]" position="before">
+                        <group colspan="4" string="Vital Signs" id="group_postpartum_monitor_vitals">
+                            <label name="systolic"/>
+                            <field name="systolic"/>
+                            <label name="diastolic"/>
+                            <field name="diastolic"/>
+                            <newline/>
+                            <label name="frequency"/>
+                            <field name="frequency"/>
+                            <label name="temperature"/>
+                            <field name="temperature"/>
+                            <newline/>
+                            <label name="uterus_involution"/>
+                            <field name="uterus_involution"/>
+                            <label name="ebl"/>
+                            <field name="ebl"/>
+                        </group>
+                    </xpath>
+
+                    <!-- Remove unnecessary fields. -->
+                    <xpath expr="/form/group[@id=&quot;group_lochia&quot;]" position="replace"></xpath>
+
+                </data>
+                ]]>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_puerperium_monitor_tree">
+            <field name="model">gnuhealth.puerperium.monitor</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_puerperium_monitor_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <!-- Not sure that this is needed. -->
+                    <xpath expr="/tree" position="replace_attributes">
+                        <tree string='Postpartum Monitor'/>
+                    </xpath>
+
+                    <!-- Remove these fields. -->
+                    <xpath expr="/tree/field[@name=&quot;lochia_amount&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;lochia_color&quot;]" position="replace"></xpath>
+                    <xpath expr="/tree/field[@name=&quot;lochia_odor&quot;]" position="replace"></xpath>
+
+                    <!-- Add these fields. -->
+                    <xpath expr="/tree/field[@name=&quot;date&quot;]" position="after">
+                        <field name="frequency" expand="1"/>
+                        <field name="temperature" expand="1"/>
+                        <field name="bp" expand="1"/>
+                    </xpath>
+                    <xpath expr="/tree/field[@name=&quot;uterus_involution&quot;]" position="after">
+                        <field name="ebl" expand="1"/>
+                    </xpath>
+
+                    <!-- Replace the date field with the eval_date_only field. -->
+                    <xpath expr="/tree/field[@name=&quot;date&quot;]" position="replace">
+                        <field name="eval_date_only" expand="1"/>
+                    </xpath>
+
+                </data>
+                ]]>
+            </field>
+        </record>
+
+
+
     </data>
 </tryton>
 
