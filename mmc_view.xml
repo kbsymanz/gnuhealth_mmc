@@ -214,6 +214,29 @@
                         </group>
                     </xpath>
 
+                    <!-- Make the obstetrics tab the first one by removing it then recreating it as the first tab. -->
+                    <xpath
+                        expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_obs&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_gyneco&quot;]"
+                        position="before">
+                        <page string="Obstetrics" id="page_obs">
+                            <group colspan="4" col="12" id="group_obstetrics">
+                                <label name="gravida"/>
+                                <field name="gravida"/>
+                                <label name="premature"/>
+                                <field name="premature"/>
+                                <label name="stillbirths"/>
+                                <field name="stillbirths"/>
+                                <label name="abortions"/>
+                                <field name="abortions"/>
+                            </group>
+                                <field name="pregnancy_history"/>
+                        </page>
+                    </xpath>
+
                 </data>
                 ]]>
             </field>
