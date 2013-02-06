@@ -12,6 +12,12 @@ import logging
 
 mmcLog = logging.getLogger('mmc')
 
+class MmcReports(ModelSingleton, ModelSQL, ModelView):
+    'Class for custom reports'
+    _name = 'mmc.reports'
+
+MmcReports()
+
 class MmcSequences(ModelSingleton, ModelSQL, ModelView):
     "Sequences for MMC"
 
