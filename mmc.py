@@ -64,6 +64,11 @@ class MmcPatientData(ModelSQL, ModelView):
         ('x', 'Separated'),
         ], 'Marital Status', sort=False)
 
+    rh = fields.Selection([
+        ('u', 'Unknown'),
+        ('+', '+'),
+        ('-', '-'),
+        ], 'Rh')
 
     # --------------------------------------------------------
     # Change the label on these fields.
@@ -183,10 +188,12 @@ class MmcPatientData(ModelSQL, ModelView):
 
     # --------------------------------------------------------
     # 99.4% of all people in the Philippines are RH positive.
-    # Oftentimes blood tests do not even test for this.
+    # Oftentimes blood tests do not even test for this. But
+    # because it is not tested for sometimes, it should be
+    # set to unknown unless explicitly set.
     # --------------------------------------------------------
     def default_rh(self):
-        return '+'
+        return 'u'
 
     # --------------------------------------------------------
     # Add our validations to the class.
