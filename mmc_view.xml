@@ -744,6 +744,160 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="mmc_view_party_address_form">
+            <field name="model">party.address</field>
+            <field name="inherit" ref="party.address_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <!-- Remove unnecessary fields. -->
+                    <xpath
+                        expr="/form/label[@name=&quot;relative_id&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;relative_id&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/label[@name=&quot;relationship&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;relationship&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/group/label[@name=&quot;is_work&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/group/field[@name=&quot;is_work&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/group/label[@name=&quot;is_school&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/group/field[@name=&quot;is_school&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/label[@name=&quot;streetbis&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;streetbis&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/label[@name=&quot;city&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;city&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/label[@name=&quot;subdivision&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;subdivision&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/label[@name=&quot;country&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;country&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/label[@name=&quot;zip&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/form/field[@name=&quot;zip&quot;]"
+                        position="replace">
+                    </xpath>
+
+                    <!-- Move city next to street and add new fields. -->
+                    <xpath
+                        expr="/form/field[@name=&quot;street&quot;]"
+                        position="after">
+                        <label name="barangay"/>
+                        <field name="barangay"/>
+                        <label name="city"/>
+                        <field name="city"/>
+                    </xpath>
+
+                    <!-- Move is_agdao next to is active field. -->
+                    <xpath
+                        expr="/form/group/field[@name=&quot;active&quot;]"
+                        position="after">
+                        <label name="is_agdao"/>
+                        <field name="is_agdao"/>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="mmc_address_view_tree_sequence">
+            <field name="model">party.address</field>
+            <field name="inherit" ref="party.address_view_tree_sequence"/>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <!-- Remove unnecessary fields. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;streetbis&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/tree/field[@name=&quot;zip&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/tree/field[@name=&quot;country&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/tree/field[@name=&quot;subdivision&quot;]"
+                        position="replace">
+                    </xpath>
+
+                    <!-- Add new fields. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;city&quot;]"
+                        position="after">
+                        <field name="barangay" width="150"/>
+                        <field name="is_agdao" width="130"/>
+                    </xpath>
+
+                    <!-- Adjust settings of certain fields. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;name&quot;]"
+                        position="replace">
+                        <field name="name" width="150"/>
+                    </xpath>
+                    <xpath
+                        expr="/tree/field[@name=&quot;street&quot;]"
+                        position="replace">
+                        <field name="name" width="150"/>
+                    </xpath>
+
+
+                </data>
+                ]]>
+            </field>
+        </record>
+
+
 
         <!-- Reports -->
         <record model="ir.action.report" id="mmc_report_prenatal_master">

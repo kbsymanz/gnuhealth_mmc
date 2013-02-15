@@ -579,3 +579,29 @@ class MmcPuerperiumMonitor(ModelSQL, ModelView):
 MmcPuerperiumMonitor()
 
 
+class Address(ModelSQL, ModelView):
+    "Address"
+    _name = 'party.address'
+    _description = __doc__
+
+    # --------------------------------------------------------
+    # Change labels, adjust help, etc.
+    # --------------------------------------------------------
+    name = fields.Char('Addr Name', help="Example: Home, mother's house, prior home, etc.",
+            states={'readonly': ~Eval('active'),}, depends=['active'])
+    street = fields.Char('Address',
+            states={'readonly': ~Eval('active'),}, depends=['active'])
+
+    # --------------------------------------------------------
+    # Add new fields.
+    # --------------------------------------------------------
+    barangay = fields.Char('Barangay', help="The patient's barangay")
+    is_agdao = fields.Boolean('Is from Agdao?',
+        help="Check if the patient is from Agdao")
+
+    def default_city(self):
+        return 'Davao City'
+
+Address()
+
+
