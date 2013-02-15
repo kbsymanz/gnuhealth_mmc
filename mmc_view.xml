@@ -22,12 +22,9 @@
                                 <field name="blood_type"/>
                                 <label name="rh"/>
                                 <field name="rh"/>
-                                <newline/>
                                 <label name="menarche"/>
                                 <field name="menarche"/>
                                 <newline/>
-                                <label name="current_address"/>
-                                <field name="current_address"/>
                                 <label name="marital_status"/>
                                 <field name="marital_status"/>
                             </group>
