@@ -220,17 +220,28 @@
                         expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_gyneco&quot;]"
                         position="before">
                         <page string="Obstetrics" id="page_obs">
-                            <group colspan="4" col="12" id="group_obstetrics">
+                            <group colspan="2" col="10" id="group_obstetrics">
                                 <label name="gravida"/>
                                 <field name="gravida"/>
-                                <label name="premature"/>
-                                <field name="premature"/>
-                                <label name="stillbirths"/>
-                                <field name="stillbirths"/>
+                                <label name="para"/>
+                                <field name="para"/>
                                 <label name="abortions"/>
                                 <field name="abortions"/>
+                                <label name="stillbirths"/>
+                                <field name="stillbirths"/>
+                                <label name="living"/>
+                                <field name="living"/>
                             </group>
-                                <field name="pregnancy_history"/>
+                            <newline/>
+                            <group col="4" colspan="2" id="group_obstetrics_para">
+                                <newline/>
+                                <label name="term" xexpand="1"/>
+                                <field name="term"/>
+                                <label name="preterm"/>
+                                <field name="preterm"/>
+                            </group>
+                            <newline/>
+                            <field name="pregnancy_history"/>
                         </page>
                     </xpath>
 

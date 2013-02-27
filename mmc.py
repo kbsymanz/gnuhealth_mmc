@@ -74,7 +74,17 @@ class MmcPatientData(ModelSQL, ModelView):
     # Change the label on these fields.
     # --------------------------------------------------------
     diseases = fields.One2Many('gnuhealth.patient.disease', 'name', 'Condition')
+    gravida = fields.Integer ('G', required=True)
+    abortions = fields.Integer('A')
+    stillbirths = fields.Integer('S')
 
+    # --------------------------------------------------------
+    # Add Pregnancy fields.
+    # --------------------------------------------------------
+    living = fields.Integer('L')        # number of live births
+    para = fields.Integer('P')          # number of times given birth
+    term = fields.Integer('Term')       # number of pregnancies to full term
+    preterm = fields.Integer('Preterm') # number of pregnancies not to full term
 
     # --------------------------------------------------------
     # Add Phil Health related fields.
@@ -194,6 +204,7 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     def default_rh(self):
         return 'u'
+
 
     # --------------------------------------------------------
     # Add our validations to the class.
