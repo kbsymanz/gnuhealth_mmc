@@ -278,6 +278,26 @@
                         </group>
                     </xpath>
 
+                    <!-- Remove some unnecessary fields. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;group_pregnancy_footer1&quot;]"
+                        position="replace">
+                    </xpath>
+
+                    <!-- Add the warning field back in amongst these other fields. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;group_pregnancy_footer2&quot;]"
+                        position="replace">
+                        <group id="group_pregnancy_footer2" colspan="6" col="6">
+                            <label name="warning"/>
+                            <field name="warning"/>
+                            <label name="pregnancy_end_date"/>
+                            <field name="pregnancy_end_date"/>
+                            <label name="pregnancy_end_result"/>
+                            <field name="pregnancy_end_result"/>
+                        </group>
+                    </xpath>
+
                     <!-- Add a section for the partner information for this pregnancy. -->
                     <xpath
                         expr="/form/group[@id=&quot;group_pregnancy_header&quot;]"
@@ -306,6 +326,27 @@
             </field>
         </record>
 
+        <!-- Remove the same fields as were removed on the form. -->
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_tree">
+            <field name="model">gnuhealth.patient.pregnancy</field>
+            <field name="inherit" ref="health_gyneco.gnuhealth_patient_pregnancy_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <!-- Remove unnecessary fields from the tree. -->
+                    <xpath
+                        expr="/tree/field[@name=&quot;iugr&quot;]"
+                        position="replace">
+                    </xpath>
+                    <xpath
+                        expr="/tree/field[@name=&quot;fetuses&quot;]"
+                        position="replace">
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
 
         <!-- Change the labels and remove some fields in the diseases form. -->
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_diseases_view_form">
