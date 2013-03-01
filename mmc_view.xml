@@ -144,15 +144,37 @@
                                 <field name="vaccine"/>
                                 <label name="dose"/>
                                 <field name="dose"/>
-                                <label name="date"/>
-                                <field name="date"/>
+                                <label name="cdate"/>
+                                <field name="cdate"/>
                             </group>
                             <newline/>
-                            <label name="next_dose_date"/>
-                            <field name="next_dose_date"/>
+                            <label name="next_dose"/>
+                            <field name="next_dose"/>
                             <label name="vaccine_by_mmc"/>
                             <field name="vaccine_by_mmc"/>
                         </group>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_vaccination_tree">
+            <field name="model">gnuhealth.vaccination</field>
+            <field name="inherit" ref="health.gnuhealth_vaccination_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <xpath
+                        expr='/tree/field[@name=&quot;date&quot;]'
+                        position='replace'>
+                        <field name="cdate"/>
+                    </xpath>
+                    <xpath
+                        expr='/tree/field[@name=&quot;next_dose_date&quot;]'
+                        position='replace'>
+                        <field name="next_dose"/>
                     </xpath>
                 </data>
                 ]]>

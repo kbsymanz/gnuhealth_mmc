@@ -291,11 +291,19 @@ class MmcVaccination(ModelSQL, ModelView):
 
 
     # --------------------------------------------------------
-    # Hide these unnecessary fields
+    # Hide these unnecessary fields.
     # --------------------------------------------------------
     vaccine_expiration_date = fields.Date('x', states={'invisible': True})
     vaccine_lot = fields.Char('x', states={'invisible': True})
     institution = fields.Many2One('party.party', 'x', states={'invisible': True})
+    date = fields.DateTime('Date', states={'invisible': True})
+    next_dose_date = fields.DateTime('Next Dose', states={'invisible': True})
+
+    # --------------------------------------------------------
+    # Add our own fields.
+    # --------------------------------------------------------
+    cdate = fields.Date('Date')             # date only, no time
+    next_dose = fields.Date('Next Dose')    # date only, no time
 
 
     # --------------------------------------------------------
@@ -309,6 +317,10 @@ class MmcVaccination(ModelSQL, ModelView):
                 return False
             else:
                 return True
+
+    def default_cdate(self):
+        return date.now()
+
 
 MmcVaccination()
 
