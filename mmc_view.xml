@@ -628,7 +628,32 @@
                                 <label name="fetus_presentation"/>
                                 <field name="fetus_presentation"/>
                             </group>
+
                             <newline/>
+
+                            <group string="Labor Intake" id="group_labor_intake" colspan="2" col="8">
+                                <label name="begin_labor_intake"/>
+                                <field name="begin_labor_intake"/>
+                                <label name="systolic_intake"/>
+                                <field name="systolic_intake"/>
+                                <label name="diastolic_intake"/>
+                                <field name="diastolic_intake"/>
+                                <label name="cr_intake"/>
+                                <field name="cr_intake"/>
+                                <label name="temperature_intake"/>
+                                <field name="temperature_intake"/>
+                                <label name="fundal_height_intake"/>
+                                <field name="fundal_height_intake"/>
+                                <label name="pos_intake"/>
+                                <field name="pos_intake"/>
+                                <label name="fetus_cr_intake"/>
+                                <field name="fetus_cr_intake"/>
+                                <label name="examiner_intake"/>
+                                <field name="examiner_intake"/>
+                            </group>
+
+                            <newline/>
+
                             <field colspan="4" name="monitoring"/>
                             <newline/>
 

@@ -529,6 +529,19 @@ class MmcPerinatal(ModelSQL, ModelView):
         help="Duration of the placenta delivery in minutes")
     ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
 
+    # --------------------------------------------------------
+    # Additional intake fields.
+    # --------------------------------------------------------
+    begin_labor_intake = fields.DateTime('Labor start')
+    pos_intake = fields.Char('POS', size=10)
+    fundal_height_intake = fields.Integer('Fundal Height')
+    systolic_intake = fields.Integer('Systolic Pressure')
+    diastolic_intake = fields.Integer('Diastolic Pressure')
+    cr_intake = fields.Integer("CR", help="Mother's heart rate")
+    fetus_cr_intake = fields.Integer("FHT", help="Fetus heart rate")
+    temperature_intake = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
+    examiner_intake = fields.Char('Examiner', required=True)
+
 
 MmcPerinatal()
 
