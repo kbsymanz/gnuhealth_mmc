@@ -702,6 +702,16 @@
                         <form string="Labor Monitor" />
                     </xpath>
 
+                    <!-- Replace the contractions field with our own. -->
+                    <xpath expr="/form/group[@id=&quot;group_perinatal_mother_monitor&quot;]/label[@name=&quot;contractions&quot;]"
+                        position="replace">
+                        <label name="contractionsStr"/>
+                    </xpath>
+                    <xpath expr="/form/group[@id=&quot;group_perinatal_mother_monitor&quot;]/field[@name=&quot;contractions&quot;]"
+                        position="replace">
+                        <field name="contractionsStr"/>
+                    </xpath>
+
                 </data>
                 ]]>
             </field>

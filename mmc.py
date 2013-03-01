@@ -557,6 +557,16 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
         ], 'Fetus Position', sort=False)
 
     # --------------------------------------------------------
+    # Hide these fields.
+    # --------------------------------------------------------
+    contractions = fields.Integer('Contractions', states={'invisible': True})
+
+    # --------------------------------------------------------
+    # Add these fields.
+    # --------------------------------------------------------
+    contractionsStr = fields.Char('Contractions', size=12)
+
+    # --------------------------------------------------------
     # Default field values.
     # --------------------------------------------------------
     def default_fetus_position(self):
