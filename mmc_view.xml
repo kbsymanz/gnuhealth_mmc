@@ -74,7 +74,7 @@
         </record>
 
 
-        <record model="ir.ui.view" id="gnuhealth_patient_tree">
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_tree">
             <field name="model">gnuhealth.patient</field>
             <field name="inherit" ref="health.gnuhealth_patient_tree" />
             <field name="type">tree</field>
@@ -104,7 +104,7 @@
 
 
         <!-- Change the wording on the medication extra info form. -->
-        <record model="ir.ui.view" id="gnuhealth_patient_medication_form">
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_medication_form">
             <field name="model">gnuhealth.patient.medication</field>
             <field name="inherit" ref="health.gnuhealth_patient_medication_form" />
             <field name="type">form</field>
@@ -343,10 +343,43 @@
                         </group>
                     </xpath>
 
+                    <!-- Remove the puerperium information and add our custom version. 
+                    Note that this replaces these views:
+                        mmc_gnuhealth_puerperium_monitor_view
+                        mmc_gnuhealth_puerperium_monitor_tree
+                    -->
+                    <xpath
+                        expr="/form/field[@name=&quot;puerperium_monitor&quot;]"
+                        position="replace">
+                        <field name="postpartum_immediate" />
+                    </xpath>
+
                 </data>
                 ]]>
             </field>
         </record>
+
+
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_postpartum_immediate_monitor_view">
+            <field name="model">gnuhealth.postpartum.immediate.monitor</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <form string="Postpartum Immediate">
+                    <label name="cr_high"/>
+                    <field name="cr_high"/>
+                    <label name="cr_low"/>
+                    <field name="cr_low"/>
+                </form>
+                ]]>
+            </field>
+        </record>
+
+
+
+
+
 
         <!-- Remove the same fields as were removed on the form. -->
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_tree">
@@ -764,7 +797,7 @@
         </record>
 
 
-        <record model="ir.ui.view" id="gnuhealth_puerperium_monitor_view">
+        <record model="ir.ui.view" id="mmc_gnuhealth_puerperium_monitor_view">
             <field name="model">gnuhealth.puerperium.monitor</field>
             <field name="inherit" ref="health_gyneco.gnuhealth_puerperium_monitor_view" />
             <field name="type">form</field>

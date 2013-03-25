@@ -398,7 +398,13 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     patient_income = fields.Integer('Patient income',
         help="The amount of pesos per month the patient earns")
 
-
+    # --------------------------------------------------------
+    # Add three new sections for postpartum: immediate,
+    # continuing, and ongoing.
+    # --------------------------------------------------------
+    postpartum_immediate = fields.One2Many(
+            'gnuhealth.postpartum.immediate.monitor',
+            'name', 'Postpartum Immediate Monitor')
 
 MmcPatientPregnancy()
 
@@ -656,5 +662,19 @@ class Address(ModelSQL, ModelView):
         return 'Davao City'
 
 Address()
+
+
+class MmcPostpartumImmediateMonitor(ModelSQL, ModelView):
+    'Postpartum Immediate Monitor'
+    _name = 'gnuhealth.postpartum.immediate.monitor'
+    _description = __doc__
+
+    name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
+    cr_high = fields.Integer('High CR')
+    cr_low = fields.Integer('Low CR')
+
+MmcPostpartumImmediateMonitor()
+
+
 
 
