@@ -405,6 +405,12 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     postpartum_immediate = fields.One2Many(
             'gnuhealth.postpartum.immediate.monitor',
             'name', 'Postpartum Immediate Monitor')
+    postpartum_continued = fields.One2Many(
+            'gnuhealth.postpartum.continued.monitor',
+            'name', 'Postpartum Continued Monitor')
+    postpartum_ongoing = fields.One2Many(
+            'gnuhealth.postpartum.ongoing.monitor',
+            'name', 'Postpartum Ongoing Monitor')
 
 MmcPatientPregnancy()
 
@@ -672,9 +678,33 @@ class MmcPostpartumImmediateMonitor(ModelSQL, ModelView):
     name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
     cr_high = fields.Integer('High CR')
     cr_low = fields.Integer('Low CR')
+    fundus_desc = fields.Char('Fundus Desc', size=30, help="Fundus description")
+    ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
+    comments = fields.Char('Comments', size=100, help="Comments")
 
 MmcPostpartumImmediateMonitor()
 
 
+class MmcPostpartumContinuedMonitor(ModelSQL, ModelView):
+    'Postpartum Continued Monitor'
+    _name = 'gnuhealth.postpartum.continued.monitor'
+    _description = __doc__
 
+    name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
+    cr_high = fields.Integer('High CR')
+    cr_low = fields.Integer('Low CR')
+
+MmcPostpartumContinuedMonitor()
+
+
+class MmcPostpartumOngoingMonitor(ModelSQL, ModelView):
+    'Postpartum Ongoing Monitor'
+    _name = 'gnuhealth.postpartum.ongoing.monitor'
+    _description = __doc__
+
+    name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
+    cr_high = fields.Integer('High CR')
+    cr_low = fields.Integer('Low CR')
+
+MmcPostpartumOngoingMonitor()
 

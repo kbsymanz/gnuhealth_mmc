@@ -351,15 +351,23 @@
                     <xpath
                         expr="/form/field[@name=&quot;puerperium_monitor&quot;]"
                         position="replace">
-                        <field name="postpartum_immediate" />
+                        <notebook>
+                            <page string="Immediate" id="page_main_postnatal_immediate">
+                                <field name="postpartum_immediate" />
+                            </page>
+                            <page string="Continued" id="page_main_postatal_continued">
+                                <field name="postpartum_continued" />
+                            </page>
+                            <page string="Ongoing" id="page_main_postatal_ongoing">
+                                <field name="postpartum_ongoing" />
+                            </page>
+                        </notebook>
                     </xpath>
 
                 </data>
                 ]]>
             </field>
         </record>
-
-
 
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_postpartum_immediate_monitor_view">
             <field name="model">gnuhealth.postpartum.immediate.monitor</field>
@@ -371,6 +379,12 @@
                     <field name="cr_high"/>
                     <label name="cr_low"/>
                     <field name="cr_low"/>
+                    <label name="fundus_desc"/>
+                    <field name="fundus_desc"/>
+                    <label name="ebl"/>
+                    <field name="ebl"/>
+                    <label name="comments"/>
+                    <field name="comments"/>
                 </form>
                 ]]>
             </field>
