@@ -399,12 +399,18 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
         help="The amount of pesos per month the patient earns")
 
     # --------------------------------------------------------
-    # Add three new sections for postpartum: immediate,
-    # continuing, and ongoing.
+    # Add fields for the immediate postpartum stage. These are
+    # summary fields, ie. they are summarized from the charts.
     # --------------------------------------------------------
-    postpartum_immediate = fields.One2Many(
-            'gnuhealth.postpartum.immediate.monitor',
-            'name', 'Postpartum Immediate Monitor')
+    pp_immed_cr_high = fields.Integer('High CR')
+    pp_immed_cr_low = fields.Integer('Low CR')
+    pp_immed_fundus_desc = fields.Char('Fundus Desc', size=30, help="Fundus description")
+    pp_immed_ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
+    pp_immed_comments = fields.Char('Comments', size=100, help="Comments")
+
+    # --------------------------------------------------------
+    # Add two new sections for postpartum: continuing and ongoing.
+    # --------------------------------------------------------
     postpartum_continued = fields.One2Many(
             'gnuhealth.postpartum.continued.monitor',
             'name', 'Postpartum Continued Monitor')
@@ -670,29 +676,46 @@ class Address(ModelSQL, ModelView):
 Address()
 
 
-class MmcPostpartumImmediateMonitor(ModelSQL, ModelView):
-    'Postpartum Immediate Monitor'
-    _name = 'gnuhealth.postpartum.immediate.monitor'
-    _description = __doc__
-
-    name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
-    cr_high = fields.Integer('High CR')
-    cr_low = fields.Integer('Low CR')
-    fundus_desc = fields.Char('Fundus Desc', size=30, help="Fundus description")
-    ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
-    comments = fields.Char('Comments', size=100, help="Comments")
-
-MmcPostpartumImmediateMonitor()
-
-
 class MmcPostpartumContinuedMonitor(ModelSQL, ModelView):
     'Postpartum Continued Monitor'
     _name = 'gnuhealth.postpartum.continued.monitor'
     _description = __doc__
 
     name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
-    cr_high = fields.Integer('High CR')
-    cr_low = fields.Integer('Low CR')
+    date_time = fields.DateTime('Date/Time', required=True)
+    initials = fields.Char('Initials', size=10, help="Who did the examination?")
+
+    # --------------------------------------------------------
+    # Mother's fields.
+    # --------------------------------------------------------
+    systolic = fields.Integer('Systolic Pressure', help="Mother's systolic")
+    diastolic = fields.Integer('Diastolic Pressure', help="Mother's diastolic")
+    mother_cr = fields.Integer("CR", help="Mother's heart rate")
+    mother_temp = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
+    fundus_desc = fields.Char('Fundus Desc', size=30, help="Fundus description")
+    ebl = fields.Integer('EBL (ml)', help="Estimated blood loss (ml)")
+
+    # --------------------------------------------------------
+    # Baby's fields.
+    # --------------------------------------------------------
+    bfed = fields.Boolean('BFed', help="Breast Fed");
+    baby_temp = fields.Float('Temp (C)', help='Temperature in celcius of the baby')
+    baby_rr = fields.Integer("RR", help="Baby's respitory rate")
+    baby_cr = fields.Integer("CR", help="Baby's heart rate")
+    comments = fields.Char('Comments', size=100, help="Comments")
+
+    # --------------------------------------------------------
+    # Add a convenience function that displays the blood pressure
+    # as one field instead of two. Useful for the tree view.
+    # --------------------------------------------------------
+    bp = fields.Function(fields.Char('B/P'), 'get_patient_evaluation_data')
+
+    def get_patient_evaluation_data(self, ids, name):
+        result = {}
+        for evaluation_data in self.browse(ids):
+            if name == 'bp':
+                result[evaluation_data.id] = "{0}/{1}".format(evaluation_data.systolic, evaluation_data.diastolic)
+        return result
 
 MmcPostpartumContinuedMonitor()
 

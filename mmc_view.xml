@@ -353,7 +353,18 @@
                         position="replace">
                         <notebook>
                             <page string="Immediate" id="page_main_postnatal_immediate">
-                                <field name="postpartum_immediate" />
+                                <group string="Postpartum Immediate Summary" id="group_postpartum_immediate" colspan="4" col="6">
+                                    <label name="pp_immed_cr_high"/>
+                                    <field name="pp_immed_cr_high"/>
+                                    <label name="pp_immed_cr_low"/>
+                                    <field name="pp_immed_cr_low"/>
+                                    <label name="pp_immed_fundus_desc"/>
+                                    <field name="pp_immed_fundus_desc"/>
+                                    <label name="pp_immed_ebl"/>
+                                    <field name="pp_immed_ebl"/>
+                                    <label name="pp_immed_comments"/>
+                                    <field name="pp_immed_comments"/>
+                                </group>
                             </page>
                             <page string="Continued" id="page_main_postatal_continued">
                                 <field name="postpartum_continued" />
@@ -369,31 +380,70 @@
             </field>
         </record>
 
-        <record model="ir.ui.view" id="mmc_gnuhealth_patient_postpartum_immediate_monitor_view">
-            <field name="model">gnuhealth.postpartum.immediate.monitor</field>
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_postpartum_continued_monitor_view">
+            <field name="model">gnuhealth.postpartum.continued.monitor</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                <form string="Postpartum Immediate">
-                    <label name="cr_high"/>
-                    <field name="cr_high"/>
-                    <label name="cr_low"/>
-                    <field name="cr_low"/>
-                    <label name="fundus_desc"/>
-                    <field name="fundus_desc"/>
-                    <label name="ebl"/>
-                    <field name="ebl"/>
-                    <label name="comments"/>
-                    <field name="comments"/>
+                <form string="Postpartum Continued">
+                    <group id="group_pp_continued">
+                        <label name="date_time"/>
+                        <field name="date_time"/>
+                        <label name="initials"/>
+                        <field name="initials"/>
+                        <newline />
+                        <label name="comments"/>
+                        <field name="comments"/>
+                    </group>
+                    <newline />
+                    <group string="Mother" id="group_pp_continued_mother">
+                        <label name="systolic"/>
+                        <field name="systolic"/>
+                        <label name="diastolic"/>
+                        <field name="diastolic"/>
+                        <label name="mother_cr"/>
+                        <field name="mother_cr"/>
+                        <label name="mother_temp"/>
+                        <field name="mother_temp"/>
+                        <label name="fundus_desc"/>
+                        <field name="fundus_desc"/>
+                        <label name="ebl"/>
+                        <field name="ebl"/>
+                    </group>
+                    <newline />
+                    <group string="Baby" id="group_pp_continued_baby">
+                        <label name="bfed"/>
+                        <field name="bfed"/>
+                        <label name="baby_temp"/>
+                        <field name="baby_temp"/>
+                        <label name="baby_rr"/>
+                        <field name="baby_rr"/>
+                        <label name="baby_cr"/>
+                        <field name="baby_cr"/>
+                    </group>
                 </form>
                 ]]>
             </field>
         </record>
 
-
-
-
-
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_postpartum_continued_monitor_tree">
+            <field name="model">gnuhealth.postpartum.continued.monitor</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <tree string='Postpartum Continued'>
+                    <field name="date_time" expand="1"/>
+                    <field name="bp" expand="1"/>
+                    <field name="mother_cr" expand="1"/>
+                    <field name="mother_temp" expand="1"/>
+                    <field name="bfed" expand="1"/>
+                    <field name="baby_temp" expand="1"/>
+                    <field name="baby_rr" expand="1"/>
+                    <field name="baby_cr" expand="1"/>
+                </tree>
+                ]]>
+            </field>
+        </record>
 
         <!-- Remove the same fields as were removed on the form. -->
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_tree">
