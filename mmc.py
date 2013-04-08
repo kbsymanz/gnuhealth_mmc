@@ -414,14 +414,9 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
     postpartum_continued = fields.One2Many(
             'gnuhealth.postpartum.continued.monitor',
             'name', 'Postpartum Continued Monitor')
-    #postpartum_ongoing = fields.One2Many(
-            #'gnuhealth.postpartum.ongoing.monitor',
-            #'name', 'Postpartum Ongoing Monitor')
-    postpartum_ongoing = fields.One2One(
-            'patientPregnancy.one2one.relation',
-            'origin',
-            'target',
-            'Postpartum Ongoing Monitor')
+    postpartum_ongoing = fields.One2Many(
+            'gnuhealth.postpartum.ongoing.monitor',
+            'name', 'Postpartum Ongoing Monitor')
 
 MmcPatientPregnancy()
 
@@ -733,130 +728,50 @@ class MmcPostpartumOngoingMonitor(ModelSQL, ModelView):
     _name = 'gnuhealth.postpartum.ongoing.monitor'
     _description = __doc__
 
-    name = fields.Char('Patient ID')
+    name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
 
     # --------------------------------------------------------
-    # Day One fields.
+    # Examination fields.
     # --------------------------------------------------------
-    d1_date_time = fields.DateTime('Date/Time')
-    d1_initials = fields.Char('Initials', size=10, help="Who did the examination?")
-
-    b1_weight = fields.Integer('Weight', help="Weight in grams")
-    b1_temp = fields.Float('Temp (C)', help='Temperature in celcius of the baby')
-    b1_cr = fields.Integer("Baby CR", help="Baby's heart rate")
-    b1_rr = fields.Integer("Baby RR", help="Baby's respitory rate")
-    b1_lungs = fields.Char('Lungs', size=70)
-    b1_skin = fields.Char('Color/Skin', size=70)
-    b1_cord = fields.Char('Cord', size=70)
-    b1_urine_last_24 = fields.Char('Urine last 24 hours', size=70)
-    b1_stool_last_24 = fields.Char('Stool last 24 hours', size=70)
-    b1_ss_infection = fields.Char('SS Infection', size=70)
-    b1_feeding = fields.Char('Feeding', size=70)
-    b1_nbs = fields.DateTime('NBS')
-    b1_bcg = fields.Char('BCG', size=70)
-    b1_other = fields.Char('Other', size=70)
-
-    m1_temp = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
-    m1_systolic = fields.Integer('Systolic Pressure', help="Mother's systolic")
-    m1_diastolic = fields.Integer('Diastolic Pressure', help="Mother's diastolic")
-    m1_cr = fields.Integer("CR", help="Mother's heart rate")
-    m1_breasts = fields.Char('Breasts', size=70)
-    m1_fundus = fields.Char('Fundus', size=70)
-    m1_perineum = fields.Char('Perineum', size=70)
-    m1_lochia = fields.Char('Lochia', size=70)
-    m1_urine = fields.Char('Urine', size=70)
-    m1_stool = fields.Char('Stool', size=70)
-    m1_ss_infection = fields.Char('SS Infection', size=70)
-    m1_other = fields.Char('Other', size=70)
-    m1_next_visit = fields.DateTime('Next Scheduled Visit')
+    date_time = fields.DateTime('Date/Time', required=True)
+    initials = fields.Char('Initials', size=10, required=True,
+            help="Who did the examination?")
 
     # --------------------------------------------------------
-    # Day Three fields.
+    # Baby fields.
     # --------------------------------------------------------
-    d3_date_time = fields.DateTime('Date/Time')
-    d3_initials = fields.Char('Initials', size=10, help="Who did the examination?")
-
-    b3_weight = fields.Integer('Weight', help="Weight in grams")
-    b3_temp = fields.Float('Temp (C)', help='Temperature in celcius of the baby')
-    b3_cr = fields.Integer("Baby CR", help="Baby's heart rate")
-    b3_rr = fields.Integer("Baby RR", help="Baby's respitory rate")
-    b3_lungs = fields.Char('Lungs', size=70)
-    b3_skin = fields.Char('Color/Skin', size=70)
-    b3_cord = fields.Char('Cord', size=70)
-    b3_urine_last_24 = fields.Char('Urine last 24 hours', size=70)
-    b3_stool_last_24 = fields.Char('Stool last 24 hours', size=70)
-    b3_ss_infection = fields.Char('SS Infection', size=70)
-    b3_feeding = fields.Char('Feeding', size=70)
-    b3_nbs = fields.DateTime('NBS')
-    b3_bcg = fields.Char('BCG', size=70)
-    b3_other = fields.Char('Other', size=70)
-
-    m3_temp = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
-    m3_systolic = fields.Integer('Systolic Pressure', help="Mother's systolic")
-    m3_diastolic = fields.Integer('Diastolic Pressure', help="Mother's diastolic")
-    m3_cr = fields.Integer("CR", help="Mother's heart rate")
-    m3_breasts = fields.Char('Breasts', size=70)
-    m3_fundus = fields.Char('Fundus', size=70)
-    m3_perineum = fields.Char('Perineum', size=70)
-    m3_lochia = fields.Char('Lochia', size=70)
-    m3_urine = fields.Char('Urine', size=70)
-    m3_stool = fields.Char('Stool', size=70)
-    m3_ss_infection = fields.Char('SS Infection', size=70)
-    m3_other = fields.Char('Other', size=70)
-    m3_next_visit = fields.DateTime('Next Scheduled Visit')
+    b_weight = fields.Integer('Weight', help="Weight in grams")
+    b_temp = fields.Float('Temp (C)', help='Temperature in celcius of the baby')
+    b_cr = fields.Integer("Baby CR", help="Baby's heart rate")
+    b_rr = fields.Integer("Baby RR", help="Baby's respitory rate")
+    b_lungs = fields.Char('Lungs', size=70)
+    b_skin = fields.Char('Color/Skin', size=70)
+    b_cord = fields.Char('Cord', size=70)
+    b_urine_last_24 = fields.Char('Urine last 24 hours', size=70)
+    b_stool_last_24 = fields.Char('Stool last 24 hours', size=70)
+    b_ss_infection = fields.Char('SS Infection', size=70)
+    b_feeding = fields.Char('Feeding', size=70)
+    b_nbs = fields.DateTime('NBS')
+    b_bcg = fields.Char('BCG', size=70)
+    b_other = fields.Char('Other', size=70)
 
     # --------------------------------------------------------
-    # Week One fields (7 days).
+    # Mother fields.
     # --------------------------------------------------------
-    d7_date_time = fields.DateTime('Date/Time')
-    d7_initials = fields.Char('Initials', size=10, help="Who did the examination?")
-
-    b7_weight = fields.Integer('Weight', help="Weight in grams")
-    b7_temp = fields.Float('Temp (C)', help='Temperature in celcius of the baby')
-    b7_cr = fields.Integer("Baby CR", help="Baby's heart rate")
-    b7_rr = fields.Integer("Baby RR", help="Baby's respitory rate")
-    b7_lungs = fields.Char('Lungs', size=70)
-    b7_skin = fields.Char('Color/Skin', size=70)
-    b7_cord = fields.Char('Cord', size=70)
-    b7_urine_last_24 = fields.Char('Urine last 24 hours', size=70)
-    b7_stool_last_24 = fields.Char('Stool last 24 hours', size=70)
-    b7_ss_infection = fields.Char('SS Infection', size=70)
-    b7_feeding = fields.Char('Feeding', size=70)
-    b7_nbs = fields.DateTime('NBS')
-    b7_bcg = fields.Char('BCG', size=70)
-    b7_other = fields.Char('Other', size=70)
-
-    m7_temp = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
-    m7_systolic = fields.Integer('Systolic Pressure', help="Mother's systolic")
-    m7_diastolic = fields.Integer('Diastolic Pressure', help="Mother's diastolic")
-    m7_cr = fields.Integer("CR", help="Mother's heart rate")
-    m7_breasts = fields.Char('Breasts', size=70)
-    m7_fundus = fields.Char('Fundus', size=70)
-    m7_perineum = fields.Char('Perineum', size=70)
-    m7_lochia = fields.Char('Lochia', size=70)
-    m7_urine = fields.Char('Urine', size=70)
-    m7_stool = fields.Char('Stool', size=70)
-    m7_ss_infection = fields.Char('SS Infection', size=70)
-    m7_other = fields.Char('Other', size=70)
-    m7_next_visit = fields.DateTime('Next Scheduled Visit')
+    m_temp = fields.Float('Temp (C)', help='Temperature in celcius of the mother')
+    m_systolic = fields.Integer('Systolic Pressure', help="Mother's systolic")
+    m_diastolic = fields.Integer('Diastolic Pressure', help="Mother's diastolic")
+    m_cr = fields.Integer("CR", help="Mother's heart rate")
+    m_breasts = fields.Char('Breasts', size=70)
+    m_fundus = fields.Char('Fundus', size=70)
+    m_perineum = fields.Char('Perineum', size=70)
+    m_lochia = fields.Char('Lochia', size=70)
+    m_urine = fields.Char('Urine', size=70)
+    m_stool = fields.Char('Stool', size=70)
+    m_ss_infection = fields.Char('SS Infection', size=70)
+    m_other = fields.Char('Other', size=70)
+    m_next_visit = fields.DateTime('Next Scheduled Visit')
 
 MmcPostpartumOngoingMonitor()
 
 
-class PatPreg2PPOngoingRelation(ModelSQL):
-    'PatientPregnancy to PostpartumOngoingMonitor Relation'
-    _name = 'patientPregnancy.one2one.relation'
-    _description = __doc__
-    origin = fields.Many2One('gnuhealth.patient.pregnancy', 'Origin')
-    target = fields.Many2One('gnuhealth.postpartum.ongoing.monitor', 'Target')
-
-    def __init__(self):
-        super(PatPreg2PPOngoingRelation, self).__init__()
-        self._sql_constraints += [
-            ('origin_unique', 'UNIQUE(origin)',
-                'Origin must be unique'),
-            ('target_unique', 'UNIQUE(target)',
-                'Target must be unique'),
-        ]
-
-PatPreg2PPOngoingRelation()
