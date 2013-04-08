@@ -343,6 +343,11 @@
                         </group>
                     </xpath>
 
+                    <!-- Reduce the width of the perinatal field. -->
+                    <xpath expr="/form/field[@name=&quot;perinatal&quot;]" position="replace">
+                        <field name="perinatal" colspan="2"/>
+                    </xpath>
+
                     <!-- Remove the puerperium information and add our custom version. 
                     Note that this replaces these views:
                         mmc_gnuhealth_puerperium_monitor_view
@@ -351,7 +356,7 @@
                     <xpath
                         expr="/form/field[@name=&quot;puerperium_monitor&quot;]"
                         position="replace">
-                        <notebook>
+                        <notebook colspan="2">
                             <page string="Immediate" id="page_main_postnatal_immediate">
                                 <group string="Postpartum Immediate Summary" id="group_postpartum_immediate" colspan="4" col="6">
                                     <label name="pp_immed_cr_high"/>
@@ -366,10 +371,10 @@
                                     <field name="pp_immed_comments"/>
                                 </group>
                             </page>
-                            <page string="Continued" id="page_main_postatal_continued">
+                            <page string="Continued" id="page_main_postpartum_continued">
                                 <field name="postpartum_continued" />
                             </page>
-                            <page string="Ongoing" id="page_main_postatal_ongoing">
+                            <page string="Ongoing" id="page_main_postpartum_ongoing">
                                 <field name="postpartum_ongoing" />
                             </page>
                         </notebook>
@@ -444,6 +449,227 @@
                 ]]>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="mmc_gnuhealth_patient_postpartum_ongoing_monitor_view">
+            <field name="model">gnuhealth.postpartum.ongoing.monitor</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <form string="Postpartum Ongoing">
+                    <notebook>
+                        <page string="Day One" id="page_postpartum_ongoing_day_one">
+                            <group string="Examination" id="group_postpartum_ongoing_day1_exam">
+                                <label name="d1_date_time"/>
+                                <field name="d1_date_time"/>
+                                <label name="d1_initials"/>
+                                <field name="d1_initials"/>
+                            </group>
+                            <newline />
+                            <group string="Baby" id="group_postpartum_ongoing_day1_baby">
+                                <label name="b1_weight"/>
+                                <field name="b1_weight"/>
+                                <label name="b1_temp"/>
+                                <field name="b1_temp"/>
+                                <label name="b1_cr"/>
+                                <field name="b1_cr"/>
+                                <label name="b1_rr"/>
+                                <field name="b1_rr"/>
+                                <label name="b1_lungs"/>
+                                <field name="b1_lungs"/>
+                                <label name="b1_skin"/>
+                                <field name="b1_skin"/>
+                                <label name="b1_cord"/>
+                                <field name="b1_cord"/>
+                                <label name="b1_urine_last_24"/>
+                                <field name="b1_urine_last_24"/>
+                                <label name="b1_stool_last_24"/>
+                                <field name="b1_stool_last_24"/>
+                                <label name="b1_ss_infection"/>
+                                <field name="b1_ss_infection"/>
+                                <label name="b1_feeding"/>
+                                <field name="b1_feeding"/>
+                                <label name="b1_nbs"/>
+                                <field name="b1_nbs"/>
+                                <label name="b1_bcg"/>
+                                <field name="b1_bcg"/>
+                                <label name="b1_other"/>
+                                <field name="b1_other"/>
+                            </group>
+                            <newline />
+                            <group string="Mother" id="group_postpartum_ongoing_day1_mother">
+                                <label name="m1_temp"/>
+                                <field name="m1_temp"/>
+                                <label name="m1_systolic"/>
+                                <field name="m1_systolic"/>
+                                <label name="m1_diastolic"/>
+                                <field name="m1_diastolic"/>
+                                <label name="m1_cr"/>
+                                <field name="m1_cr"/>
+                                <label name="m1_breasts"/>
+                                <field name="m1_breasts"/>
+                                <label name="m1_fundus"/>
+                                <field name="m1_fundus"/>
+                                <label name="m1_perineum"/>
+                                <field name="m1_perineum"/>
+                                <label name="m1_lochia"/>
+                                <field name="m1_lochia"/>
+                                <label name="m1_urine"/>
+                                <field name="m1_urine"/>
+                                <label name="m1_stool"/>
+                                <field name="m1_stool"/>
+                                <label name="m1_ss_infection"/>
+                                <field name="m1_ss_infection"/>
+                                <label name="m1_other"/>
+                                <field name="m1_other"/>
+                                <label name="m1_next_visit"/>
+                                <field name="m1_next_visit"/>
+                            </group>
+                        </page>
+                        <page string="Day Three" id="page_postpartum_ongoing_day_three">
+                            <group string="Examination" id="group_postpartum_ongoing_day3_exam">
+                                <label name="d3_date_time"/>
+                                <field name="d3_date_time"/>
+                                <label name="d3_initials"/>
+                                <field name="d3_initials"/>
+                            </group>
+                            <newline />
+                            <group string="Baby" id="group_postpartum_ongoing_day3_baby">
+                                <label name="b3_weight"/>
+                                <field name="b3_weight"/>
+                                <label name="b3_temp"/>
+                                <field name="b3_temp"/>
+                                <label name="b3_cr"/>
+                                <field name="b3_cr"/>
+                                <label name="b3_rr"/>
+                                <field name="b3_rr"/>
+                                <label name="b3_lungs"/>
+                                <field name="b3_lungs"/>
+                                <label name="b3_skin"/>
+                                <field name="b3_skin"/>
+                                <label name="b3_cord"/>
+                                <field name="b3_cord"/>
+                                <label name="b3_urine_last_24"/>
+                                <field name="b3_urine_last_24"/>
+                                <label name="b3_stool_last_24"/>
+                                <field name="b3_stool_last_24"/>
+                                <label name="b3_ss_infection"/>
+                                <field name="b3_ss_infection"/>
+                                <label name="b3_feeding"/>
+                                <field name="b3_feeding"/>
+                                <label name="b3_nbs"/>
+                                <field name="b3_nbs"/>
+                                <label name="b3_bcg"/>
+                                <field name="b3_bcg"/>
+                                <label name="b3_other"/>
+                                <field name="b1_other"/>
+                            </group>
+                            <newline />
+                            <group string="Mother" id="group_postpartum_ongoing_day3_mother">
+                                <label name="m3_temp"/>
+                                <field name="m3_temp"/>
+                                <label name="m3_systolic"/>
+                                <field name="m3_systolic"/>
+                                <label name="m3_diastolic"/>
+                                <field name="m3_diastolic"/>
+                                <label name="m3_cr"/>
+                                <field name="m3_cr"/>
+                                <label name="m3_breasts"/>
+                                <field name="m3_breasts"/>
+                                <label name="m3_fundus"/>
+                                <field name="m3_fundus"/>
+                                <label name="m3_perineum"/>
+                                <field name="m3_perineum"/>
+                                <label name="m3_lochia"/>
+                                <field name="m3_lochia"/>
+                                <label name="m3_urine"/>
+                                <field name="m3_urine"/>
+                                <label name="m3_stool"/>
+                                <field name="m3_stool"/>
+                                <label name="m3_ss_infection"/>
+                                <field name="m3_ss_infection"/>
+                                <label name="m3_other"/>
+                                <field name="m3_other"/>
+                                <label name="m3_next_visit"/>
+                                <field name="m3_next_visit"/>
+                            </group>
+                        </page>
+                        <page string="Week One" id="page_postpartum_ongoing_week_one">
+                            <group string="Examination" id="group_postpartum_ongoing_week1_exam">
+                                <label name="d7_date_time"/>
+                                <field name="d7_date_time"/>
+                                <label name="d7_initials"/>
+                                <field name="d7_initials"/>
+                            </group>
+                            <newline />
+                            <group string="Baby" id="group_postpartum_ongoing_week1_baby">
+                                <label name="b7_weight"/>
+                                <field name="b7_weight"/>
+                                <label name="b7_temp"/>
+                                <field name="b7_temp"/>
+                                <label name="b7_cr"/>
+                                <field name="b7_cr"/>
+                                <label name="b7_rr"/>
+                                <field name="b7_rr"/>
+                                <label name="b7_lungs"/>
+                                <field name="b7_lungs"/>
+                                <label name="b7_skin"/>
+                                <field name="b7_skin"/>
+                                <label name="b7_cord"/>
+                                <field name="b7_cord"/>
+                                <label name="b7_urine_last_24"/>
+                                <field name="b7_urine_last_24"/>
+                                <label name="b7_stool_last_24"/>
+                                <field name="b7_stool_last_24"/>
+                                <label name="b7_ss_infection"/>
+                                <field name="b7_ss_infection"/>
+                                <label name="b7_feeding"/>
+                                <field name="b7_feeding"/>
+                                <label name="b7_nbs"/>
+                                <field name="b7_nbs"/>
+                                <label name="b7_bcg"/>
+                                <field name="b7_bcg"/>
+                                <label name="b7_other"/>
+                                <field name="b7_other"/>
+                            </group>
+                            <newline />
+                            <group string="Mother" id="group_postpartum_ongoing_week1_mother">
+                                <label name="m7_temp"/>
+                                <field name="m7_temp"/>
+                                <label name="m7_systolic"/>
+                                <field name="m7_systolic"/>
+                                <label name="m7_diastolic"/>
+                                <field name="m7_diastolic"/>
+                                <label name="m7_cr"/>
+                                <field name="m7_cr"/>
+                                <label name="m7_breasts"/>
+                                <field name="m7_breasts"/>
+                                <label name="m7_fundus"/>
+                                <field name="m7_fundus"/>
+                                <label name="m7_perineum"/>
+                                <field name="m7_perineum"/>
+                                <label name="m7_lochia"/>
+                                <field name="m7_lochia"/>
+                                <label name="m7_urine"/>
+                                <field name="m7_urine"/>
+                                <label name="m7_stool"/>
+                                <field name="m7_stool"/>
+                                <label name="m7_ss_infection"/>
+                                <field name="m7_ss_infection"/>
+                                <label name="m7_other"/>
+                                <field name="m7_other"/>
+                                <label name="m7_next_visit"/>
+                                <field name="m7_next_visit"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+                ]]>
+            </field>
+        </record>
+
+
+
+
 
         <!-- Remove the same fields as were removed on the form. -->
         <record model="ir.ui.view" id="mmc_gnuhealth_patient_pregnancy_tree">
