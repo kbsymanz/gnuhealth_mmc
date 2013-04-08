@@ -4,13 +4,29 @@
 # Customization of GnuHealth for the needs of Mercy Maternity Clinic, Inc.
 # -------------------------------------------------------------------------------
 from trytond.model import ModelView, ModelSingleton, ModelSQL, fields
-from trytond.pyson import Eval, Not, Bool
+from trytond.pyson import Eval, Not, Bool, Or, And
 from trytond.pool import Pool
 
 import datetime
 import logging
 
 mmcLog = logging.getLogger('mmc')
+
+def month_num_to_abbrev(num):
+    mon = {}
+    mon['01'] = 'Jan'
+    mon['02'] = 'Feb'
+    mon['03'] = 'Mar'
+    mon['04'] = 'Apr'
+    mon['05'] = 'May'
+    mon['06'] = 'Jun'
+    mon['07'] = 'Jul'
+    mon['08'] = 'Aug'
+    mon['09'] = 'Sep'
+    mon['10'] = 'Oct'
+    mon['11'] = 'Nov'
+    mon['12'] = 'Dec'
+    return mon[num]
 
 class MmcReports(ModelSingleton, ModelSQL, ModelView):
     'Class for custom reports'
@@ -300,11 +316,63 @@ class MmcVaccination(ModelSQL, ModelView):
     next_dose_date = fields.DateTime('Next Dose', states={'invisible': True})
 
     # --------------------------------------------------------
-    # Add our own fields.
+    # Allow approximate dates for recording of historical
+    # vaccinations per patient testimony.
     # --------------------------------------------------------
-    cdate = fields.Date('Date')             # date only, no time
-    next_dose = fields.Date('Next Dose')    # date only, no time
+    cdate_month = fields.Selection([
+        ('', ''),
+        ('01', 'Jan'),
+        ('02', 'Feb'),
+        ('03', 'Mar'),
+        ('04', 'Apr'),
+        ('05', 'May'),
+        ('06', 'Jun'),
+        ('07', 'Jul'),
+        ('08', 'Aug'),
+        ('09', 'Sep'),
+        ('10', 'Oct'),
+        ('11', 'Nov'),
+        ('12', 'Dec'),
+        ], 'Approximate Month', help="Approximate month of the vaccination",
+        sort=False)
+    cdate_year = fields.Integer('Approximate Year (YYYY)',
+        help="Year of the vaccination")
 
+    # --------------------------------------------------------
+    # But also allow an exact date if known or vaccination is
+    # being administered.
+    # --------------------------------------------------------
+    cdate = fields.Date('Date',
+        states={
+            'invisible': Or(Bool(Eval('cdate_year')), And(Bool(Eval('cdate_month')),
+                Bool(Eval('cdate_year'))))
+        })
+    next_dose = fields.Date('Next Dose')
+
+    # --------------------------------------------------------
+    # Display date for tree view that shows appropriate date
+    # no matter if cdate or cdate_year or cdate_month and 
+    # cdate_year chosen.
+    # --------------------------------------------------------
+    display_date = fields.Function(fields.Char('Date'), 'get_display_date')
+
+    # --------------------------------------------------------
+    # Choose either cdate or the cdate_month and/or cdate_year
+    # fields to create an appropriate display.
+    # --------------------------------------------------------
+    def get_display_date(self, ids, name):
+        result = {}
+        for vacc in self.browse(ids):
+            if name == 'display_date':
+                if vacc.cdate_year is not None and (vacc.cdate_month is None or
+                        len(vacc.cdate_month) == 0):
+                    result[vacc.id] = "{0}".format(vacc.cdate_year)
+                elif vacc.cdate_year != None and vacc.cdate_month != None and vacc.cdate_month != '':
+                    result[vacc.id] = "{0} {1}".format(month_num_to_abbrev(vacc.cdate_month), vacc.cdate_year)
+                else:
+                    result[vacc.id] = "{0}".format(vacc.cdate)
+
+        return result
 
     # --------------------------------------------------------
     # Revise validation to not require the next_dose_date field.
@@ -319,8 +387,13 @@ class MmcVaccination(ModelSQL, ModelView):
                 return True
 
     def default_cdate(self):
-        return date.now()
+        return datetime.datetime.now()
 
+    def default_cdate_month(self):
+        return ''
+
+    def default_cdate_year(self):
+        return None
 
 MmcVaccination()
 

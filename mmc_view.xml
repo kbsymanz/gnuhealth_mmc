@@ -139,13 +139,21 @@
                         expr='/form/group[@id=&quot;vaccination_header&quot;]'
                         position='replace'>
                         <group colspan="4" id="vaccination_header">
-                            <group colspan="4" col="6" id="group_vaccine_dates">
+                            <group colspan="2" col="4" id="group_vaccine_dates">
                                 <label name="vaccine"/>
                                 <field name="vaccine"/>
                                 <label name="dose"/>
                                 <field name="dose"/>
-                                <label name="cdate"/>
-                                <field name="cdate"/>
+                                <newline />
+                                <group string="Date of vaccination" colspan="2" col="6" id="group_vaccinate_dates_approx">
+                                    <label name="cdate"/>
+                                    <field name="cdate"/>
+                                    <newline />
+                                    <label name="cdate_month" />
+                                    <field name="cdate_month" />
+                                    <label name="cdate_year" />
+                                    <field name="cdate_year" />
+                                </group>
                             </group>
                             <newline/>
                             <label name="next_dose"/>
@@ -169,7 +177,7 @@
                     <xpath
                         expr='/tree/field[@name=&quot;date&quot;]'
                         position='replace'>
-                        <field name="cdate"/>
+                        <field name="display_date" />
                     </xpath>
                     <xpath
                         expr='/tree/field[@name=&quot;next_dose_date&quot;]'
