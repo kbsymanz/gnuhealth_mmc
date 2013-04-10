@@ -1215,7 +1215,7 @@
         <!-- Reports -->
         <record model="ir.action.report" id="mmc_report_prenatal_master">
             <field name="name">Prenatal Master</field>
-            <field name="model">mmc.reports</field>
+            <field name="model">gnuhealth.patient</field>
             <field name="report_name">mmc.report_prenatal_master</field>
             <field name="report">mmc/reports/prenatalmaster.odt</field>
             <field name="template_extension">odt</field>
