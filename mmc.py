@@ -10,6 +10,24 @@ from trytond.pool import Pool
 import datetime
 import logging
 
+__all__ = [
+    'MmcReports',
+    'MmcSequences',
+    'MmcPatientData',
+    'MmcPatientDiseaseInfo',
+    'MmcVaccination',
+    'MmcPatientMedication',
+    'MmcMedicationTemplate',
+    'MmcPatientPregnancy',
+    'MmcPrenatalEvaluation',
+    'MmcPerinatal',
+    'MmcPerinatalMonitor',
+    'MmcPuerperiumMonitor',
+    'Address',
+    'MmcPostpartumContinuedMonitor',
+    'MmcPostpartumOngoingMonitor',
+    ]
+
 mmcLog = logging.getLogger('mmc')
 
 def month_num_to_abbrev(num):
@@ -30,27 +48,23 @@ def month_num_to_abbrev(num):
 
 class MmcReports(ModelSingleton, ModelSQL, ModelView):
     'Class for custom reports'
-    _name = 'mmc.reports'
+    __name__ = 'mmc.reports'
 
-MmcReports()
 
 class MmcSequences(ModelSingleton, ModelSQL, ModelView):
     "Sequences for MMC"
 
-    _description = __doc__
-    _name = "mmc.sequences"
+    __name__ = "mmc.sequences"
 
     doh_sequence = fields.Property(fields.Many2One('ir.sequence',
         'DOH Sequence', domain=[('code', '=', 'mmc.doh')],
         required=True))
 
-MmcSequences()
 
 
 class MmcPatientData(ModelSQL, ModelView):
     'Patient related information'
-    _name = 'gnuhealth.patient'
-    _description = __doc__
+    __name__ = 'gnuhealth.patient'
 
     # --------------------------------------------------------
     # Hide these fields
@@ -152,8 +166,8 @@ class MmcPatientData(ModelSQL, ModelView):
     # types it in. User can type with hyphens or not. But don't
     # change anything unless the field seems correct.
     # --------------------------------------------------------
-    def on_change_doh_id(self, vals):
-        origFld = vals.get('doh_id')
+    def on_change_doh_id(self):
+        origFld = self.doh_id
         doh = origFld.replace('-', '')
         val = origFld
         if ((len(doh) == 6) and (doh.isdigit())):
@@ -166,8 +180,8 @@ class MmcPatientData(ModelSQL, ModelView):
     # types it in. User can type with hyphens or not. But don't
     # change anything unless the field seems correct.
     # --------------------------------------------------------
-    def on_change_phil_health_id(self, vals):
-        origFld = vals.get('phil_health_id')
+    def on_change_phil_health_id(self):
+        origFld = self.phil_health_id
         phic = origFld.replace('-', '')
         val = origFld
         if ((len(phic) == 12) and (phic.isdigit())):
@@ -191,7 +205,8 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Validate the PHIC #.
     # --------------------------------------------------------
-    def validate_phil_health_id(self, ids):
+    @classmethod
+    def validate_phil_health_id(ids):
         for patientData in self.browse(ids):
             if not patientData.phil_health:
                 # if Phil Health does not apply, then we are fine.
@@ -208,7 +223,8 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Set a reasonable default sex for a maternity clinic.
     # --------------------------------------------------------
-    def default_sex(self):
+    @staticmethod
+    def default_sex():
         return 'f'
 
 
@@ -218,24 +234,26 @@ class MmcPatientData(ModelSQL, ModelView):
     # because it is not tested for sometimes, it should be
     # set to unknown unless explicitly set.
     # --------------------------------------------------------
-    def default_rh(self):
+    @staticmethod
+    def default_rh():
         return 'u'
 
 
     # --------------------------------------------------------
     # Add our validations to the class.
     # --------------------------------------------------------
-    def __init__(self):
-        super(MmcPatientData, self).__init__()
-        self._sql_constraints = [
+    @classmethod
+    def __setup__(cls):
+        super(MmcPatientData, cls).__setup__()
+        cls._sql_constraints = [
             ('name_uniq', 'UNIQUE(name)', 'The Patient already exists !'),
             ('doh_uniq', 'UNIQUE(doh_id)', 'The MMC ID already exists !'),
         ]
-        self._constraints += [
+        cls._constraints += [
             ('validate_phil_health_id', 'phil_health_id_format'),
             ('validate_doh_id', 'validate_doh_id_format'),
         ]
-        self._error_messages.update({
+        cls._error_messages.update({
             'phil_health_id_format': 'PHIC# must be 12 numbers',
             'validate_doh_id_format': 'Department of Health ID must be 6 numbers'
         })
@@ -245,7 +263,8 @@ class MmcPatientData(ModelSQL, ModelView):
     # can be overridden by the user, if desired, to another
     # number or a blank value.
     # --------------------------------------------------------
-    def create(self, values):
+    @classmethod
+    def create(cls, values):
         if not values.get('doh_id'):
             values = values.copy()
             sequence_obj = Pool().get('ir.sequence')
@@ -259,16 +278,14 @@ class MmcPatientData(ModelSQL, ModelView):
             seq = sequence_obj.get_id(config.doh_sequence.id)[2:]
             values['doh_id'] = "{0}-{1}-{2}".format(seq[:2], seq[2:4], seq[4:6])
 
-        return super(MmcPatientData, self).create(values)
+        return super(MmcPatientData, cls).create(values)
 
 
-MmcPatientData()
 
 
 class MmcPatientDiseaseInfo(ModelSQL, ModelView):
     'Patient Disease History'
-    _name = 'gnuhealth.patient.disease'
-    _description = __doc__
+    __name__ = 'gnuhealth.patient.disease'
 
     # --------------------------------------------------------
     # Change the label of these fields.
@@ -291,13 +308,11 @@ class MmcPatientDiseaseInfo(ModelSQL, ModelView):
     is_active = fields.Boolean('Active condition')
 
 
-MmcPatientDiseaseInfo()
 
 
 class MmcVaccination(ModelSQL, ModelView):
     'Patient Vaccination information'
-    _name = 'gnuhealth.vaccination'
-    _description = __doc__
+    __name__ = 'gnuhealth.vaccination'
 
     # --------------------------------------------------------
     # Was the vaccine administered by MMC?
@@ -386,23 +401,24 @@ class MmcVaccination(ModelSQL, ModelView):
             else:
                 return True
 
-    def default_cdate(self):
+    @staticmethod
+    def default_cdate():
         return datetime.datetime.now()
 
-    def default_cdate_month(self):
+    @staticmethod
+    def default_cdate_month():
         return ''
 
-    def default_cdate_year(self):
+    @staticmethod
+    def default_cdate_year():
         return None
 
-MmcVaccination()
 
 
 class MmcPatientMedication(ModelSQL, ModelView):
     'Patient Medication'
-    _name = 'gnuhealth.patient.medication'
+    __name__ = 'gnuhealth.patient.medication'
     _inherits = {'gnuhealth.medication.template': 'template'}
-    _description = __doc__
 
     # --------------------------------------------------------
     # Change the field label.
@@ -410,13 +426,11 @@ class MmcPatientMedication(ModelSQL, ModelView):
     doctor = fields.Many2One('gnuhealth.physician', 'Name',
         help='Name of person who prescribed the medicament')
 
-MmcPatientMedication()
 
 
 class MmcMedicationTemplate(ModelSQL, ModelView):
     'Template for medication'
-    _name = 'gnuhealth.medication.template'
-    _description = __doc__
+    __name__ = 'gnuhealth.medication.template'
 
     # --------------------------------------------------------
     # Change the field label.
@@ -424,13 +438,11 @@ class MmcMedicationTemplate(ModelSQL, ModelView):
     medicament = fields.Many2One('gnuhealth.medicament', 'Name of Med',
         required=True, help='Prescribed Medicine')
 
-MmcMedicationTemplate()
 
 
 class MmcPatientPregnancy(ModelSQL, ModelView):
     'Patient Pregnancy'
-    _name = 'gnuhealth.patient.pregnancy'
-    _description = __doc__
+    __name__ = 'gnuhealth.patient.pregnancy'
 
     # --------------------------------------------------------
     # Change the field labels.
@@ -491,13 +503,11 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
             'gnuhealth.postpartum.ongoing.monitor',
             'name', 'Postpartum Ongoing Monitor')
 
-MmcPatientPregnancy()
 
 
 class MmcPrenatalEvaluation(ModelSQL, ModelView):
     'Prenatal and Antenatal Evaluations'
-    _name = 'gnuhealth.patient.prenatal.evaluation'
-    _description = __doc__
+    __name__ = 'gnuhealth.patient.prenatal.evaluation'
 
     def get_patient_evaluation_data(self, ids, name):
         result = {}
@@ -575,13 +585,11 @@ class MmcPrenatalEvaluation(ModelSQL, ModelView):
     eval_date_only = fields.Function(fields.Date('Date'), 'get_patient_evaluation_data')
 
 
-MmcPrenatalEvaluation()
 
 
 class MmcPerinatal(ModelSQL, ModelView):
     'Perinatal Information'
-    _name = 'gnuhealth.perinatal'
-    _description = __doc__
+    __name__ = 'gnuhealth.perinatal'
 
     def get_perinatal_information(self, ids, name):
         result = {}
@@ -634,13 +642,11 @@ class MmcPerinatal(ModelSQL, ModelView):
     examiner_intake = fields.Char('Examiner', required=True)
 
 
-MmcPerinatal()
 
 
 class MmcPerinatalMonitor(ModelSQL, ModelView):
     'Perinatal Monitor'
-    _name = 'gnuhealth.perinatal.monitor'
-    _description = __doc__
+    __name__ = 'gnuhealth.perinatal.monitor'
 
     # --------------------------------------------------------
     # Rename the labels of these fields.
@@ -673,16 +679,15 @@ class MmcPerinatalMonitor(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Default field values.
     # --------------------------------------------------------
-    def default_fetus_position(self):
+    @staticmethod
+    def default_fetus_position():
         return 'c'
 
-MmcPerinatalMonitor()
 
 
 class MmcPuerperiumMonitor(ModelSQL, ModelView):
     'Puerperium Monitor'
-    _name = 'gnuhealth.puerperium.monitor'
-    _description = __doc__
+    __name__ = 'gnuhealth.puerperium.monitor'
 
     # --------------------------------------------------------
     # Change the labels of these fields.
@@ -720,13 +725,11 @@ class MmcPuerperiumMonitor(ModelSQL, ModelView):
 
         return result
 
-MmcPuerperiumMonitor()
 
 
 class Address(ModelSQL, ModelView):
     "Address"
-    _name = 'party.address'
-    _description = __doc__
+    __name__ = 'party.address'
 
     # --------------------------------------------------------
     # Change labels, adjust help, etc.
@@ -743,16 +746,16 @@ class Address(ModelSQL, ModelView):
     is_agdao = fields.Boolean('Is from Agdao?',
         help="Check if the patient is from Agdao")
 
-    def default_city(self):
+    @staticmethod
+    def default_city():
+        # TODO: do this right.
         return 'Davao City'
 
-Address()
 
 
 class MmcPostpartumContinuedMonitor(ModelSQL, ModelView):
     'Postpartum Continued Monitor'
-    _name = 'gnuhealth.postpartum.continued.monitor'
-    _description = __doc__
+    __name__ = 'gnuhealth.postpartum.continued.monitor'
 
     name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
     date_time = fields.DateTime('Date/Time', required=True)
@@ -793,13 +796,11 @@ class MmcPostpartumContinuedMonitor(ModelSQL, ModelView):
                     result[evaluation_data.id] = "{0}/{1}".format(evaluation_data.systolic, evaluation_data.diastolic)
         return result
 
-MmcPostpartumContinuedMonitor()
 
 
 class MmcPostpartumOngoingMonitor(ModelSQL, ModelView):
     'Postpartum Ongoing Monitor'
-    _name = 'gnuhealth.postpartum.ongoing.monitor'
-    _description = __doc__
+    __name__ = 'gnuhealth.postpartum.ongoing.monitor'
 
     name = fields.Many2One('gnuhealth.patient.pregnancy', 'Patient Pregnancy')
 
@@ -845,6 +846,5 @@ class MmcPostpartumOngoingMonitor(ModelSQL, ModelView):
     m_other = fields.Char('Other', size=70)
     m_next_visit = fields.DateTime('Next Scheduled Visit')
 
-MmcPostpartumOngoingMonitor()
 
 
