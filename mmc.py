@@ -191,8 +191,9 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Validate the DOH ID.
     # --------------------------------------------------------
-    def validate_doh_id(self, ids):
-        for patientData in self.browse(ids):
+    @staticmethod
+    def validate_doh_id(ids):
+        for patientData in ids:
             if (patientData.doh_id == None or len(patientData.doh_id) == 0):
                 return True
             doh = patientData.doh_id.replace('-', '')
@@ -205,9 +206,9 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Validate the PHIC #.
     # --------------------------------------------------------
-    @classmethod
+    @staticmethod
     def validate_phil_health_id(ids):
-        for patientData in self.browse(ids):
+        for patientData in ids:
             if not patientData.phil_health:
                 # if Phil Health does not apply, then we are fine.
                 return True
@@ -269,7 +270,7 @@ class MmcPatientData(ModelSQL, ModelView):
             values = values.copy()
             sequence_obj = Pool().get('ir.sequence')
             config_obj = Pool().get('mmc.sequences')
-            config = config_obj.browse(1)
+            config = config_obj(1)
             # --------------------------------------------------------
             # The sequence is prefixed with the current 4 digit year
             # but we need only a two digit year and we like it formatted
@@ -375,9 +376,10 @@ class MmcVaccination(ModelSQL, ModelView):
     # Choose either cdate or the cdate_month and/or cdate_year
     # fields to create an appropriate display.
     # --------------------------------------------------------
-    def get_display_date(self, ids, name):
+    @staticmethod
+    def get_display_date(ids, name):
         result = {}
-        for vacc in self.browse(ids):
+        for vacc in ids:
             if name == 'display_date':
                 if vacc.cdate_year is not None and (vacc.cdate_month is None or
                         len(vacc.cdate_month) == 0):
@@ -392,8 +394,9 @@ class MmcVaccination(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Revise validation to not require the next_dose_date field.
     # --------------------------------------------------------
-    def validate_next_dose_date (self, ids):
-        for vaccine_data in self.browse(ids):
+    @staticmethod
+    def validate_next_dose_date (ids):
+        for vaccine_data in ids:
             if vaccine_data.next_dose_date is None:
                 return True
             if (vaccine_data.next_dose_date < vaccine_data.date):
@@ -457,7 +460,6 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
             'required': Not(Bool(Eval('current_pregnancy'))),
             })
 
-
     # --------------------------------------------------------
     # Add an alternative due date field.
     # --------------------------------------------------------
@@ -503,16 +505,25 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
             'gnuhealth.postpartum.ongoing.monitor',
             'name', 'Postpartum Ongoing Monitor')
 
+    # --------------------------------------------------------
+    # We don't use this field, and it is always one because
+    # by law the lay-in clinic cannot handle multiple births.
+    # --------------------------------------------------------
+    @staticmethod
+    def default_fetuses():
+        return 1
+
 
 
 class MmcPrenatalEvaluation(ModelSQL, ModelView):
     'Prenatal and Antenatal Evaluations'
     __name__ = 'gnuhealth.patient.prenatal.evaluation'
 
-    def get_patient_evaluation_data(self, ids, name):
+    @staticmethod
+    def get_patient_evaluation_data(ids, name):
         result = {}
 
-        for evaluation_data in self.browse(ids):
+        for evaluation_data in ids:
 
             if name == 'gestational_weeks':
                 gestational_age = datetime.datetime.date(evaluation_data.evaluation_date) - evaluation_data.name.lmp
@@ -591,10 +602,11 @@ class MmcPerinatal(ModelSQL, ModelView):
     'Perinatal Information'
     __name__ = 'gnuhealth.perinatal'
 
-    def get_perinatal_information(self, ids, name):
+    @staticmethod
+    def get_perinatal_information(ids, name):
         result = {}
 
-        for perinatal_data in self.browse(ids):
+        for perinatal_data in ids:
             if name == 'gestational_weeks':
                 gestational_age = datetime.datetime.date(perinatal_data.admission_date) - perinatal_data.name.lmp
                 result[perinatal_data.id] = (gestational_age.days)/7
@@ -713,10 +725,11 @@ class MmcPuerperiumMonitor(ModelSQL, ModelView):
     # --------------------------------------------------------
     eval_date_only = fields.Function(fields.Date('Date'), 'get_patient_evaluation_data')
 
-    def get_patient_evaluation_data(self, ids, name):
+    @staticmethod
+    def get_patient_evaluation_data(ids, name):
         result = {}
 
-        for evaluation_data in self.browse(ids):
+        for evaluation_data in ids:
             if name == 'bp':
                 result[evaluation_data.id] = "{0}/{1}".format(evaluation_data.systolic, evaluation_data.diastolic)
 
@@ -786,9 +799,10 @@ class MmcPostpartumContinuedMonitor(ModelSQL, ModelView):
     # --------------------------------------------------------
     bp = fields.Function(fields.Char('B/P'), 'get_patient_evaluation_data')
 
-    def get_patient_evaluation_data(self, ids, name):
+    @staticmethod
+    def get_patient_evaluation_data(ids, name):
         result = {}
-        for evaluation_data in self.browse(ids):
+        for evaluation_data in ids:
             if name == 'bp':
                 if evaluation_data.systolic == None or evaluation_data.diastolic == None:
                     result[evaluation_data.id] = ''
