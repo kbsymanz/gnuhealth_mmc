@@ -69,9 +69,6 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Hide these fields
     # --------------------------------------------------------
-    ethnic_group = fields.Many2One('gnuhealth.ethnicity', 'x',
-            states={'invisible': True})
-
     family = fields.Many2One('gnuhealth.family', 'x',
             states={'invisible': True})
 
@@ -85,14 +82,17 @@ class MmcPatientData(ModelSQL, ModelView):
     # --------------------------------------------------------
     # Expand the selection list of these fields.
     # --------------------------------------------------------
-    marital_status = fields.Selection([
-        ('l', 'Live-in'),
-        ('s', 'Single'),
-        ('m', 'Married'),
-        ('w', 'Widowed'),
-        ('d', 'Divorced'),
-        ('x', 'Separated'),
-        ], 'Marital Status', sort=False)
+    marital_status = fields.Function(
+        fields.Selection([
+            (None, ''),
+            ('l', 'Live-in'),
+            ('s', 'Single'),
+            ('m', 'Married'),
+            ('c', 'Concubinage'),
+            ('w', 'Widowed'),
+            ('d', 'Divorced'),
+            ('x', 'Separated'),
+            ], 'Marital Status', sort=False), 'get_patient_marital_status')
 
     rh = fields.Selection([
         ('u', 'Unknown'),
@@ -421,7 +421,6 @@ class MmcVaccination(ModelSQL, ModelView):
 class MmcPatientMedication(ModelSQL, ModelView):
     'Patient Medication'
     __name__ = 'gnuhealth.patient.medication'
-    _inherits = {'gnuhealth.medication.template': 'template'}
 
     # --------------------------------------------------------
     # Change the field label.

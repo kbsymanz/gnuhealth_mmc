@@ -229,9 +229,9 @@
 
                     <!-- Remove the sex field and replace with the DOH ID. -->
                     <xpath
-                        expr="/form/group[@id=&quot;patient_main_info&quot;]/group[@id=&quot;patient_main_info1&quot;]"
+                        expr="/form/group[@id=&quot;patient_main_info&quot;]/group[@id=&quot;patient_main_info_name&quot;]"
                         position="replace">
-                        <group col="6" id="patient_main_info1">
+                        <group col="6" id="patient_main_info_3">
                             <label name="name"/>
                             <field name="name"/>
                             <label name="identification_code"/>
