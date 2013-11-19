@@ -265,21 +265,22 @@ class MmcPatientData(ModelSQL, ModelView):
     # number or a blank value.
     # --------------------------------------------------------
     @classmethod
-    def create(cls, values):
-        if not values.get('doh_id'):
-            values = values.copy()
-            sequence_obj = Pool().get('ir.sequence')
-            config_obj = Pool().get('mmc.sequences')
-            config = config_obj(1)
-            # --------------------------------------------------------
-            # The sequence is prefixed with the current 4 digit year
-            # but we need only a two digit year and we like it formatted
-            # a certain way.
-            # --------------------------------------------------------
-            seq = sequence_obj.get_id(config.doh_sequence.id)[2:]
-            values['doh_id'] = "{0}-{1}-{2}".format(seq[:2], seq[2:4], seq[4:6])
+    def create(cls, vlist):
+        sequence_obj = Pool().get('ir.sequence')
+        config_obj = Pool().get('mmc.sequences')
+        vlist = [x.copy() for x in vlist]
+        for values in vlist:
+            if not values.get('doh_id'):
+                config = config_obj(1)
+                # --------------------------------------------------------
+                # The sequence is prefixed with the current 4 digit year
+                # but we need only a two digit year and we like it formatted
+                # a certain way.
+                # --------------------------------------------------------
+                seq = sequence_obj.get_id(config.doh_sequence.id)[2:]
+                values['doh_id'] = "{0}-{1}-{2}".format(seq[:2], seq[2:4], seq[4:6])
 
-        return super(MmcPatientData, cls).create(values)
+        return super(MmcPatientData, cls).create(vlist)
 
 
 
