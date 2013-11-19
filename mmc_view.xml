@@ -241,6 +241,12 @@
                         </group>
                     </xpath>
 
+                    <!-- Remove the picture. -->
+                    <xpath
+                        expr="/form/group[@id=&quot;patient_main_info&quot;]/group[@id=&quot;patient__pic&quot;]"
+                        position="replace">
+                    </xpath>
+
                     <!-- Make the obstetrics tab the first one by removing it then recreating it as the first tab. -->
                     <xpath
                         expr="/form/notebook/page[@id=&quot;page_gyneco_obs&quot;]/notebook/page[@id=&quot;page_obs&quot;]"
