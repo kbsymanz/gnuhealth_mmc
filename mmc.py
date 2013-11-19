@@ -506,6 +506,22 @@ class MmcPatientPregnancy(ModelSQL, ModelView):
             'name', 'Postpartum Ongoing Monitor')
 
     # --------------------------------------------------------
+    # Add doctor/dentist consult date fields.
+    # --------------------------------------------------------
+    doctor_consult_date = fields.Date('Dr consult date',
+            help="The date that the patient consulted a doctor")
+    dentist_consult_date = fields.Date('Dentist consult date',
+            help="The date that the patient consulted a dentist")
+
+    # --------------------------------------------------------
+    # Add other miscellaneous fields.
+    # --------------------------------------------------------
+    mb_book = fields.Boolean('MB Book', help="Patient has MB Book?")
+    iodized_salt = fields.Boolean('Iodized Salt', help="Patient uses iodized salt")
+    where_deliver = fields.Char('Where deliver?', help="Where will patient deliver?")
+
+
+    # --------------------------------------------------------
     # We don't use this field, and it is always one because
     # by law the lay-in clinic cannot handle multiple births.
     # --------------------------------------------------------

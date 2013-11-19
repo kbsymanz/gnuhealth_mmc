@@ -1,5 +1,7 @@
 from trytond.pool import Pool
-from mmc import *
+
+from .mmc import *
+from .mmc_reports import *
 
 def register():
     Pool.register(
@@ -19,3 +21,6 @@ def register():
         MmcPostpartumContinuedMonitor,
         MmcPostpartumOngoingMonitor,
         module='mmc', type_='model')
+    Pool.register(
+        MmcPrenatalReport,
+        module='mmc', type_='report')

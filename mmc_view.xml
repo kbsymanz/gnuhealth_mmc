@@ -334,7 +334,8 @@
                         </group>
                     </xpath>
 
-                    <!-- Add a section for the partner information for this pregnancy. -->
+                    <!-- Add a section for the partner and doctor/dentist
+                    consultations for this pregnancy. -->
                     <xpath
                         expr="/form/group[@id=&quot;group_pregnancy_header&quot;]"
                         position="after">
@@ -354,6 +355,19 @@
                             <field name="partner_income"/>
                             <label name="patient_income"/>
                             <field name="patient_income"/>
+                        </group>
+                        <group colspan="8" col="8" id="misc_info_group">
+                            <label name="doctor_consult_date" />
+                            <field name="doctor_consult_date" />
+                            <label name="dentist_consult_date" />
+                            <field name="dentist_consult_date" />
+                            <label name="mb_book" />
+                            <field name="mb_book" />
+                            <label name="iodized_salt" />
+                            <field name="iodized_salt" />
+                            <newline/>
+                            <label name="where_deliver" />
+                            <field name="where_deliver" />
                         </group>
                     </xpath>
 
@@ -1221,14 +1235,12 @@
         <!-- Reports -->
         <record model="ir.action.report" id="mmc_report_prenatal_master">
             <field name="name">Prenatal Master</field>
-            <field name="model">gnuhealth.patient</field>
-            <field name="report_name">mmc.report_prenatal_master</field>
+            <field name="report_name">gnuhealth.patient.doh.prenatal</field>
             <field name="report">mmc/reports/prenatalmaster.odt</field>
             <field name="template_extension">odt</field>
         </record>
         <record model="ir.action.keyword" id="mcc_action_report_prenatal_master">
             <field name="keyword">form_print</field>
-            <field name="model">gnuhealth.patient,-1</field>
             <field name="action" ref="mmc_report_prenatal_master"/>
         </record>
 
